@@ -1,12 +1,15 @@
 package menus;
 
+import doas.UserDAO;
+import documents.User;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class LoginMenu {
 
     private static boolean validateUsername(String username) {
-
+        username = username.trim();
         if (username.contains(" ")) {
             System.out.println("Error: Username contains whitespace");
             return false;
@@ -21,7 +24,7 @@ public class LoginMenu {
     }
 
     private static boolean validatePassword(String password) {
-
+        password = password.trim();
         if (password.contains(" ")) {
             System.out.println("Error: Password contains whitespace");
             return false;
@@ -45,21 +48,18 @@ public class LoginMenu {
             System.out.println("Password:");
             String password = sc.nextLine();
 
-            username = username.trim();
-            password = password.trim();
-
             // Check if username and password are valid
             if (!validateUsername(username))
                 return;
             if (!validatePassword(password))
                 return;
 
-            /*
-            if (UserDAO.addUser(username, password))
+
+            if (UserDAO.createNewUser(username, password))
                 System.out.println("Successfully registered");
             else
                 System.out.println("Failed to register");
-            */
+
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             sc.nextLine();
@@ -80,16 +80,15 @@ public class LoginMenu {
             String password = sc.nextLine();
 
             // Authenticate and log in
-            /*
+
             if (UserDAO.authenticateUser(username, password)) {
                 User user = UserDAO.getUser(username);
                 if (user != null) {
                     MainMenu.run(sc, user);
                 }
-
             } else
                 System.out.println("Login failed");
-             */
+
 
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
@@ -105,7 +104,7 @@ public class LoginMenu {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("~~~Better Twitter~~~");
+            System.out.println("~~~Super Mega Library~~~");
             System.out.println("1. Login");
             System.out.println("2. Register");
             System.out.println("3. Exit");
@@ -117,10 +116,10 @@ public class LoginMenu {
                 switch (input) {
                     case 1:
                         loginMenu(sc);
-                        continue;
+                        break;
                     case 2:
                         registerMenu(sc);
-                        continue;
+                        break;
                     case 3:
                         System.exit(0);
                     default:
@@ -135,6 +134,5 @@ public class LoginMenu {
             }
 
         }
-
     }
 }
