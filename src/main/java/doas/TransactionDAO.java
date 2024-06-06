@@ -8,7 +8,7 @@ import org.bson.Document;
 public class BookDAO {
     MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
     MongoDatabase database = mongoClient.getDatabase("LibraryManagement");
-    MOngoCollection<Doucment> collection = dtabase.getCollections("Transaction")
+    MOngoCollection<Doucment> collection = dtabase.getCollections("Transaction");
     MongoCollection<Document> collection;
 
     //    public BookDAO(String collection){
@@ -60,7 +60,7 @@ public class BookDAO {
             bookID = doc.getString("transactionID");
             checkedoutDate = doc.getString("transactionID");
             dueDate = doc.getString("dueDate");
-            checkedOut = doc.getBoolean("checkOUt")
+            checkedOut = doc.getBoolean("checkOUt");
 
             Transaction trans = new Transaction(transactionID,userID,bookID,checkoutDate,dueDate,checkedOut);
             System.out.println(trans.toString());
