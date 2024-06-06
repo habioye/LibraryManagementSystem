@@ -48,4 +48,26 @@ public class Transaction {
     public String getTransactionID() {
         return transactionID;
     }
+
+    // toString method
+    @Override
+    public String toString() {
+        String thickLine = "=========================================";
+        String headerLine = "| %-15s | %-20s |";
+
+        return String.format(
+                "LibraryRecord:\n" +
+                        thickLine + "\n" +
+                        headerLine + "\n" +
+                        thickLine + "\n" +
+                        "| userID        : %-20s |\n" +
+                        "| checkoutDate  : %-20s |\n" +
+                        "| dueDate       : %-20s |\n" +
+                        "| checkout      : %-20b |\n" +
+                        thickLine,
+                "Field", "Value",
+                userID, checkoutDate, dueDate, checkout
+        );
+    }
+
 }
