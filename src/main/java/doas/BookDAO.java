@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class BookDAO {
     static private MongoCollection<Document> collection;
     public static void BookDAOInit(MongoCollection<Document> collect){
@@ -31,8 +33,24 @@ public class BookDAO {
     }
     public static void deleteBook(String id){
         if (collection != null){
-            collection.deleteOne(new Document("_id",new ObjectId(id)));
+            collection.deleteOne(new Document("_id", new ObjectId(id)));
         } else {
+            System.out.println("Initialize Database");
+        }
+    }
+
+    public static void checkedOutBook(String id){
+        if (collection != null){
+            collection.updateOne(eq("_id", id), new Document("$set", new Document("checkedOut", true)));
+        }else {
+            System.out.println("Initialize Database");
+        }
+    }
+
+    public static void checkedInBook(String id){
+        if (collection != null){
+            collection.updateOne(eq("_id", id), new Document("$set", new Document("checkedOut", false)));
+        }else {
             System.out.println("Initialize Database");
         }
     }
@@ -96,5 +114,7 @@ public class BookDAO {
             return null;
         }
     }
+
+
 
 }
