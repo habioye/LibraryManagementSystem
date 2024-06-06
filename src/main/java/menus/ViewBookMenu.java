@@ -29,8 +29,7 @@ public class ViewBookMenu {
         System.out.println("Enter the book title you're searching for:");
         String input = sc.nextLine().trim();
 
-        BookDAO dao = new BookDAO(COLLECTION_NAME);
-        ArrayList<Book> books = (ArrayList<Book>) dao.getBookUsingFilter(1, input);
+        ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBookUsingFilter(1, input);
 
         for (Book b : books) {
             System.out.println(b);
@@ -42,8 +41,7 @@ public class ViewBookMenu {
         System.out.println("Enter the genres you're searching for, separated by spaces:");
         String input = sc.nextLine().trim();
 
-        BookDAO dao = new BookDAO(COLLECTION_NAME);
-        ArrayList<Book> books = (ArrayList<Book>) dao.getBookUsingFilter(3, input);
+        ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBookUsingFilter(3, input);
 
         for (Book b : books) {
             System.out.println(b);
@@ -69,8 +67,7 @@ public class ViewBookMenu {
         }
 
         String input = sc.nextLine().trim();
-        BookDAO dao = new BookDAO(COLLECTION_NAME);
-        ArrayList<Book> books = (ArrayList<Book>) dao.getBookUsingFilter(mode, input);
+        ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBookUsingFilter(mode, input);
 
         for (Book b : books) {
             System.out.println(b);
