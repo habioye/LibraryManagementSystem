@@ -1,4 +1,4 @@
-package org.example.menus;
+package menus;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
