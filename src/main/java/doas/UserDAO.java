@@ -1,6 +1,7 @@
 package doas;
 
 
+import com.mongodb.BasicDBList;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -15,12 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
+    private static MongoCollection<Document> userCollection;
+    private static MongoCollection<Document> bookCollection;
 
-    public static boolean createNewUser(String username, String password) {
+    public static void initializeCollections(MongoCollection<Document> userCollec,
+                                             MongoCollection<Document> bookCollec) {
+        userCollection = userCollec;
+        bookCollection = bookCollec;
+    }
 
-        // Connect with MongoDB database.
-        DBConnection db = new DBConnection();
-        MongoCollection<Document> collection = db.getCollection("User");
+    public static boolean createNewUser(String username, String password, String first, String last) {
+
+        if(userCollection == null || bookCollection == null) {
+            System.out.println("ERROR: Class was not initialized!");
+            return false;
+        }
 
         // Check if user with that
         // username already exists.
@@ -33,10 +43,15 @@ public class UserDAO {
         // Create new user
         Document newUserDoc = new Document()
                 .append("username", username)
-                .append("password", password);
-        var result = collection.insertOne(newUserDoc);
+                .append("password", password)
+                .append("role", "user")
+                .append("firstname", first)
+                .append("lastname", last)
+                .append("checkedOutBooks", new BasicDBList());
 
-        db.close();
+        // Insert
+        var result = userCollection.insertOne(newUserDoc);
+
         // If operation was successful, return true;
         if(result.wasAcknowledged())
             return true;
@@ -47,21 +62,24 @@ public class UserDAO {
 
     public static User getUser(String username) {
 
-        // Connect to DB
-        DBConnection db = new DBConnection();
-        MongoCollection<Document> collection = db.getCollection("User");
+        if(userCollection == null || bookCollection == null) {
+            System.out.println("ERROR: Class was not initialized!");
+            return null;
+        }
 
         // Acquire all users with provided username.
         Document filter = new Document("username", username);
-        FindIterable<Document> result = collection.find(filter);
+        FindIterable<Document> result = userCollection.find(filter);
 
         // Create user objects with that username.
         ArrayList<User> usersGrabbed = new ArrayList<>();
         for(Document doc: result) {
-            List<String> checkedOutBooks = doc.getList("checkedOutBooks", String.class);
+            List<ObjectId> checkedOutBooks = doc.getList("checkedOutBooks", ObjectId.class);
+            ArrayList<String> checkOutBooks = new ArrayList<>();
+            checkedOutBooks.forEach(book -> checkOutBooks.add(book.toString()));
             User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
-                    doc.get("password").toString(), doc.get("firstName").toString(), doc.get("lastName").toString(),
-                    checkedOutBooks.toArray(new String[0]));
+                    doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                    checkOutBooks.toArray(new String[0]));
             usersGrabbed.add(user);
         }
 
@@ -73,7 +91,6 @@ public class UserDAO {
         if(usersGrabbed.size() > 1)
             throw new RuntimeException("SERVER ERROR: multiple users with the same username!");
 
-        db.close();
         // Return user.
         return usersGrabbed.getFirst();
 
@@ -81,13 +98,14 @@ public class UserDAO {
 
     public static boolean authenticateUser(String username, String password) {
 
-        // Connect to DB
-        DBConnection db = new DBConnection();
-        MongoCollection<Document> collection = db.getCollection("User");
+        if(userCollection == null || bookCollection == null) {
+            System.out.println("ERROR: Class was not initialized!");
+            return false;
+        }
 
         // Acquire all users with provided username and password
         Bson filter = Filters.and(Filters.eq("username", username), Filters.eq("password", password));
-        FindIterable<Document> result = collection.find(filter);
+        FindIterable<Document> result = userCollection.find(filter);
 
         // Create user objects with given credentials
         ArrayList<User> usersGrabbed = new ArrayList<>();
@@ -111,16 +129,16 @@ public class UserDAO {
 
         // Return true as there exists only
         // one user with those credentials.
-        db.close();
         return true;
 
     }
 
     public static ArrayList<Book> grabCheckedOutBooks(String username) {
 
-        // Connect to DB
-        DBConnection db = new DBConnection();
-        MongoCollection<Document> collection = db.getCollection("Book");
+        if(userCollection == null || bookCollection == null) {
+            System.out.println("ERROR: Class was not initialized!");
+            return null;
+        }
 
         // Gather the user making the request
         User currentUser = getUser(username);
@@ -133,13 +151,13 @@ public class UserDAO {
 
             // Create filter per bookID in user's array.
             Document filter = new Document("_id", new ObjectId(bookID));
-            FindIterable<Document> books = collection.find(filter);
+            FindIterable<Document> books = bookCollection.find(filter);
 
             // Gather the book with given ID.
             ArrayList<Book> booksWithSameID = new ArrayList<>();
             for(Document doc: books) {
                 List<String> genres = doc.getList("genres", String.class);
-                boolean checkedOut = doc.get("checkedOut", boolean.class);
+                boolean checkedOut = (boolean) doc.get("checkedOut");
                 Book newBook = new Book(doc.get("_id").toString(), doc.get("title").toString(),
                         doc.get("description").toString(), doc.get("author").toString(), genres, checkedOut,
                         doc.get("currentTransactionId").toString());

@@ -1,10 +1,16 @@
+import com.mongodb.BasicDBList;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import database.DBConnection;
 import doas.BookDAO;
 import documents.Book;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static doas.BookDAO.addBook;
 
@@ -20,20 +26,28 @@ public class SetUpTest {
         BookDAO.addBook("Title4","Author1","Des4", Arrays.asList("Genre5","Genre3"));
         BookDAO.addBook("Title5","Author3","Des5", Arrays.asList("Genre6","Genre7"));
 
-        MongoCollection<Document> collection = db.getCollection("UserTest");
-        collection.insertOne(new Document("username", "user1")
+        MongoCollection<Document> userCollection = db.getCollection("UserTest");
+        MongoCollection<Document> bookCollection = db.getCollection("BookTest");
+
+        BasicDBList checkOutBooks = new BasicDBList();
+        Document filter = new Document("author", "Author1");
+        FindIterable<Document> prefabBooks = bookCollection.find();
+        BasicDBList list = new BasicDBList();
+        prefabBooks.forEach(book -> list.add(book.get("_id")));
+
+        userCollection.insertOne(new Document("username", "user1")
                 .append("password","user1")
                 .append("role","user")
                 .append("firstname","firstname1")
                 .append("lastname","lastname1")
                 .append("checkedOutBooks",Arrays.asList()));
-        collection.insertOne(new Document("username", "user2")
+        userCollection.insertOne(new Document("username", "user2")
                 .append("password","user2")
                 .append("role","user")
                 .append("firstname","firstname2")
                 .append("lastname","lastname2")
-                .append("checkedOutBooks",Arrays.asList()));
-        collection.insertOne(new Document("username", "admin")
+                .append("checkedOutBooks", list));
+        userCollection.insertOne(new Document("username", "admin")
                 .append("password","admin")
                 .append("role","admin")
                 .append("firstname","firstname3")
