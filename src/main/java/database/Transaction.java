@@ -1,4 +1,4 @@
-public class Transaction {
+/*public class Transaction {
     private final String transactionID;
     private String userID;
     private String checkoutDate;
@@ -71,3 +71,5 @@ public class Transaction {
     }
 
 }
+
+ */
