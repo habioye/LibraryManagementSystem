@@ -1,5 +1,8 @@
 package menus;
 
+import doas.UserDAO;
+import documents.User;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -51,12 +54,12 @@ public class LoginMenu {
             if (!validatePassword(password))
                 return;
 
-            /* TODO
-            if (UserDAO.addUser(username, password))
+
+            if (UserDAO.createNewUser(username, password))
                 System.out.println("Successfully registered");
             else
                 System.out.println("Failed to register");
-            */
+
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             sc.nextLine();
@@ -77,16 +80,15 @@ public class LoginMenu {
             String password = sc.nextLine();
 
             // Authenticate and log in
-            /* TODO
+
             if (UserDAO.authenticateUser(username, password)) {
                 User user = UserDAO.getUser(username);
                 if (user != null) {
                     MainMenu.run(sc, user);
                 }
-
             } else
                 System.out.println("Login failed");
-             */
+
 
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");

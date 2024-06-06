@@ -34,7 +34,7 @@ public class MainMenu {
                         System.out.println("To be implemented");
                         break;
                     case 4:
-                        return; // Return to login menu
+                        return;  // Return to login menu
                     default:
                         System.out.println("Invalid input");
                 }
@@ -68,7 +68,7 @@ public class MainMenu {
 
                 switch (input) {
                     case 1:
-                        System.out.println("To be implemented");
+                        ViewBookMenu.run(sc, user);
                         break;
                     case 2:
                         System.out.println("To be implemented");
