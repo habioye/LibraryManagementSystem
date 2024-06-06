@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class LoginMenu {
 
+    // Establish connection with database and collections
     static {
         DBConnection db = new DBConnection();
         BookDAO.BookDAOInit(db.getCollection("BookTest"));
@@ -18,6 +19,7 @@ public class LoginMenu {
     }
 
     private static boolean validateUsername(String username) {
+
         username = username.trim();
         if (username.contains(" ")) {
             System.out.println("Error: Username contains whitespace");
@@ -33,6 +35,7 @@ public class LoginMenu {
     }
 
     private static boolean validatePassword(String password) {
+
         password = password.trim();
         if (password.contains(" ")) {
             System.out.println("Error: Password contains whitespace");
@@ -94,7 +97,6 @@ public class LoginMenu {
             String password = sc.nextLine();
 
             // Authenticate and log in
-
             if (UserDAO.authenticateUser(username, password)) {
                 User user = UserDAO.getUser(username);
                 if (user != null) {
@@ -102,7 +104,6 @@ public class LoginMenu {
                 }
             } else
                 System.out.println("Login failed");
-
 
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
