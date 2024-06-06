@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -65,7 +66,15 @@ public class BookDAO {
             };
             Document query;
             if (queryType.equals("genres")){
-                query = new Document(queryType, new Document("$all", Arrays.asList(name.split(" "))));
+                List<Pattern> regexPatterns = new ArrayList<>();
+                for (String genre : name.split(" ")) {
+                    // Create a case-insensitive regex pattern for each genre
+                    Pattern pattern = Pattern.compile(genre, Pattern.CASE_INSENSITIVE);
+                    regexPatterns.add(pattern);
+                }
+
+                // Construct the MongoDB query using the $all operator and the regex patterns
+                query = new Document("genres", new Document("$all", regexPatterns));
             } else {
                 query = new Document(queryType, new Document("$regex", name).append("$options", "i"));
             }
