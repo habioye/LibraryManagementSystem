@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class LoginMenu {
 
     private static boolean validateUsername(String username) {
-
+        username = username.trim();
         if (username.contains(" ")) {
             System.out.println("Error: Username contains whitespace");
             return false;
@@ -21,7 +21,7 @@ public class LoginMenu {
     }
 
     private static boolean validatePassword(String password) {
-
+        password = password.trim();
         if (password.contains(" ")) {
             System.out.println("Error: Password contains whitespace");
             return false;
@@ -45,16 +45,13 @@ public class LoginMenu {
             System.out.println("Password:");
             String password = sc.nextLine();
 
-            username = username.trim();
-            password = password.trim();
-
             // Check if username and password are valid
             if (!validateUsername(username))
                 return;
             if (!validatePassword(password))
                 return;
 
-            /*
+            /* TODO
             if (UserDAO.addUser(username, password))
                 System.out.println("Successfully registered");
             else
@@ -80,7 +77,7 @@ public class LoginMenu {
             String password = sc.nextLine();
 
             // Authenticate and log in
-            /*
+            /* TODO
             if (UserDAO.authenticateUser(username, password)) {
                 User user = UserDAO.getUser(username);
                 if (user != null) {
@@ -105,7 +102,7 @@ public class LoginMenu {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("~~~Better Twitter~~~");
+            System.out.println("~~~Super Mega Library~~~");
             System.out.println("1. Login");
             System.out.println("2. Register");
             System.out.println("3. Exit");
@@ -117,10 +114,10 @@ public class LoginMenu {
                 switch (input) {
                     case 1:
                         loginMenu(sc);
-                        continue;
+                        break;
                     case 2:
                         registerMenu(sc);
-                        continue;
+                        break;
                     case 3:
                         System.exit(0);
                     default:
@@ -135,6 +132,5 @@ public class LoginMenu {
             }
 
         }
-
     }
 }
