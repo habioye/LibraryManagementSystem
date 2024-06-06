@@ -55,7 +55,7 @@ public class TestBookDAO {
         dbConnection.getCollection("BookTest").deleteMany(new Document());
         dbConnection.getCollection("UserTest").deleteMany(new Document());
         SetUpTest.setUp();
-        List<Book> books = BookDAO.getBookUsingFilter(3,"Genre1 Genre2");
+        List<Book> books = BookDAO.getBookUsingFilter(3,"Genre1 genre2");
         assertEquals(2,books.size());
         assertEquals("Title1",books.get(0).getBookTitle());
         assertEquals("Title1",books.get(1).getBookTitle());
