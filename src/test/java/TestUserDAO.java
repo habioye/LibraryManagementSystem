@@ -6,6 +6,8 @@ import org.bson.Document;
 import org.junit.Test;
 import documents.User;
 
+import static org.junit.Assert.*;
+
 public class TestUserDAO {
 
     @Test
@@ -26,12 +28,16 @@ public class TestUserDAO {
         UserDAO.initializeCollections(user, book);
 
         User newUser = UserDAO.getUser(username);
-        System.out.println(newUser.getUserID() + " " + newUser.getFirstName() + " " +
-                newUser.getLastName() + " " + newUser.getUsername());
+        assertEquals("user1", newUser.getUsername());
+        assertEquals("user1", newUser.getPassword());
+        assertEquals("user", newUser.getRole());
+        assertEquals("firstname1", newUser.getFirstName());
+        assertEquals("lastname1", newUser.getLastName());
     }
 
+
     @Test
-    public void testLogginIn() {
+    public void testAuthenticateUser() {
 
         DBConnection connect = new DBConnection();
         connect.getCollection("BookTest").deleteMany(new Document());
@@ -47,7 +53,12 @@ public class TestUserDAO {
         MongoCollection<Document> book = connect.getCollection("BookTest");
         UserDAO.initializeCollections(user, book);
 
-        System.out.println(UserDAO.authenticateUser(username, password));
+        assertTrue(UserDAO.authenticateUser(username, password));
+        assertFalse(UserDAO.authenticateUser("hello", password));
+        assertFalse(UserDAO.authenticateUser(username, "hello"));
+        assertFalse(UserDAO.authenticateUser("", ""));
+        assertFalse(UserDAO.authenticateUser("", password));
+
     }
 
     @Test
@@ -67,8 +78,12 @@ public class TestUserDAO {
         MongoCollection<Document> book = connect.getCollection("BookTest");
         UserDAO.initializeCollections(user, book);
 
-        System.out.println(UserDAO.createNewUser(username, password, "ant", "yoo"));
-        System.out.println(UserDAO.createNewUser("newUser1", "newUser2", "ant", "yoo"));
+        assertFalse(UserDAO.createNewUser(username, password, "ant", "yoo"));
+        assertTrue(UserDAO.createNewUser("newUser1", "newUser1", "ant", "yoo"));
+        assertTrue(UserDAO.createNewUser("newUser2", "newUser2", "ant", "yoo"));
+        assertFalse(UserDAO.createNewUser("newUser2", "newUser2", "ant", "yoo"));
+        assertTrue(UserDAO.createNewUser("newUser3", "newUser2", "ant", "yoo"));
+        assertFalse(UserDAO.createNewUser("newUser3", "newUser2", "ant", "yoo"));
     }
 
     @Test
