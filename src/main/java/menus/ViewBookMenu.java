@@ -15,39 +15,12 @@ public class ViewBookMenu {
     // TODO
     private static void viewAllBooksMenu(Scanner sc, User user) {
 
-        //ArrayList<Book> books = BookDAO.getAllBooks();
-        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBooks();
 
         for (Book b : books) {
             System.out.println(b);
         }
 
-    }
-
-    private static void viewBooksByTitleMenu(Scanner sc, User user) {
-
-        System.out.println("Enter the book title you're searching for:");
-        String input = sc.nextLine().trim();
-
-        BookDAO dao = new BookDAO(COLLECTION_NAME);
-        ArrayList<Book> books = (ArrayList<Book>) dao.getBookUsingFilter(1, input);
-
-        for (Book b : books) {
-            System.out.println(b);
-        }
-    }
-
-    private static void viewBooksByGenreMenu(Scanner sc, User user) {
-
-        System.out.println("Enter the genres you're searching for, separated by spaces:");
-        String input = sc.nextLine().trim();
-
-        BookDAO dao = new BookDAO(COLLECTION_NAME);
-        ArrayList<Book> books = (ArrayList<Book>) dao.getBookUsingFilter(3, input);
-
-        for (Book b : books) {
-            System.out.println(b);
-        }
     }
 
     private static void viewBookMenu(Scanner sc, int menuInput) {
@@ -69,8 +42,7 @@ public class ViewBookMenu {
         }
 
         String input = sc.nextLine().trim();
-        BookDAO dao = new BookDAO(COLLECTION_NAME);
-        ArrayList<Book> books = (ArrayList<Book>) dao.getBookUsingFilter(mode, input);
+        ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBookUsingFilter(mode, input);
 
         for (Book b : books) {
             System.out.println(b);
