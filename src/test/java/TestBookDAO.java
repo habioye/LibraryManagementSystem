@@ -3,6 +3,7 @@ import database.DBConnection;
 import doas.BookDAO;
 import documents.Book;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -68,6 +69,44 @@ public class TestBookDAO {
         List<Book> books = BookDAO.getBooks();
         assertEquals(6,books.size());
 
+    }
+    @Test
+    public void test_delete_book_with_valid_id() {
+        DBConnection dbConnection = new DBConnection();
+        dbConnection.getCollection("BookTest").deleteMany(new Document());
+        BookDAO.BookDAOInit(dbConnection.getCollection("BookTest"));
+
+        // Add a book to delete
+        BookDAO.addBook("Title1", "Author1", "Description1", Arrays.asList("Genre1", "Genre2"));
+        List<Book> books = BookDAO.getBooks();
+        assertEquals(1, books.size());
+
+        // Delete the book
+        String bookId = books.get(0).getBookId();
+        BookDAO.deleteBook(bookId);
+
+        // Verify the book is deleted
+        books = BookDAO.getBooks();
+        assertEquals(0, books.size());
+    }
+    @Test
+    public void test_delete_book_with_non_existent_id() {
+        DBConnection dbConnection = new DBConnection();
+        dbConnection.getCollection("BookTest").deleteMany(new Document());
+        BookDAO.BookDAOInit(dbConnection.getCollection("BookTest"));
+
+        // Add a book to ensure collection is not empty
+        BookDAO.addBook("Title1", "Author1", "Description1", Arrays.asList("Genre1", "Genre2"));
+        List<Book> books = BookDAO.getBooks();
+        assertEquals(1, books.size());
+
+        // Attempt to delete a non-existent book
+        String nonExistentId = new ObjectId().toHexString();
+        BookDAO.deleteBook(nonExistentId);
+
+        // Verify the book is still there
+        books = BookDAO.getBooks();
+        assertEquals(1, books.size());
     }
 
 

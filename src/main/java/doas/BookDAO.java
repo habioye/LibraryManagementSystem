@@ -29,6 +29,13 @@ public class BookDAO {
             System.out.println("Initialize Database");
         }
     }
+    public static void deleteBook(String id){
+        if (collection != null){
+            collection.deleteOne(new Document("_id",new ObjectId(id)));
+        } else {
+            System.out.println("Initialize Database");
+        }
+    }
     public static List<Book> getBookUsingFilter(int mode, String name){
         if (collection != null){
             List<Book> books = new ArrayList<>();
