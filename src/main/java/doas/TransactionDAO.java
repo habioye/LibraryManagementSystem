@@ -5,11 +5,11 @@ import database.DBConnection;
 import documents.Book;
 import org.bson.Document;
 
-public class BookDAO {
-    MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-    MongoDatabase database = mongoClient.getDatabase("LibraryManagement");
-    MOngoCollection<Doucment> collection = dtabase.getCollections("Transaction")
-    MongoCollection<Document> collection;
+public class TransactionDAO {
+//    MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+//    MongoDatabase database = mongoClient.getDatabase("LibraryManagement");
+//    MOngoCollection<Doucment> collection = dtabase.getCollections("Transaction")
+//    MongoCollection<Document> collection;
 
     //    public BookDAO(String collection){
 //        this.collection = new DBConnection().getCollection(collection);
