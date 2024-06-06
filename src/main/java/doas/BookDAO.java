@@ -27,7 +27,7 @@ public class BookDAO {
                 .append("currentTransactionId", "");
         collection.insertOne(book);
     }
-    public List<Book> getAllLibraryBooks(int mode, String name){
+    public List<Book> getBookUsingFilter(int mode, String name){
         List<Book> books = new ArrayList<>();
         String queryType = switch(mode){
             case 1 -> "title";

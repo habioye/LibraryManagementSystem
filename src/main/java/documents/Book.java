@@ -12,7 +12,7 @@ public class Book {
     private boolean checkout;
     private String transactionId;
 
-    public Book(String bookId, String bookTitle, String description, String author, List<String> genre, boolean checkout, String transactionId) {
+    public Book(String bookId, String bookTitle, String author, String description, List<String> genre, boolean checkout, String transactionId) {
         this.bookId = bookId;
         this.bookTitle = bookTitle;
         this.description = description;
@@ -48,5 +48,37 @@ public class Book {
 
     public String getTransactionId() {
         return transactionId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("╔═══════════════════════════════════════════════════╗\n");
+        sb.append(String.format("║ %-49s ║\n", "Title: " + bookTitle));
+        sb.append("╠═══════════════════════════════════════════════════╣\n");
+        sb.append(String.format("║ %-49s ║\n", "Author: " + author));
+        sb.append("╠═══════════════════════════════════════════════════╣\n");
+        sb.append("║ Description:                                      ║\n");
+        sb.append(wrapText(description, 50));
+        sb.append(String.format("║ %-49s ║\n", "Genre: " + genre));
+        sb.append(String.format("║ %-49s ║\n", "CheckOut: " + checkout));
+        sb.append("╚═══════════════════════════════════════════════════╝");
+        return sb.toString();
+    }
+    private String wrapText(String text, int maxLength) {
+        StringBuilder result = new StringBuilder();
+        int index = 0;
+        while (index < text.length()) {
+            int endIndex = Math.min(index + maxLength, text.length());
+            if (endIndex < text.length() && !Character.isWhitespace(text.charAt(endIndex))) {
+                // If the character at the end index is not whitespace, find the last whitespace character before it
+                while (endIndex > index && !Character.isWhitespace(text.charAt(endIndex))) {
+                    endIndex--;
+                }
+            }
+            result.append("║ " + String.format("%-49s", text.substring(index, endIndex)) + " ║\n");
+            index = endIndex;
+        }
+        return result.toString();
     }
 }
