@@ -1,18 +1,11 @@
 import com.mongodb.BasicDBList;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import database.DBConnection;
-import doas.BookDAO;
-import documents.Book;
+import connection.DBConnection;
+import dao.BookDAO;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import static doas.BookDAO.addBook;
 
 public class SetUpTest {
     // CALL THIS ONCE

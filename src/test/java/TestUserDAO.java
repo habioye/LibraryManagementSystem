@@ -1,10 +1,10 @@
 
 import com.mongodb.client.MongoCollection;
-import database.DBConnection;
-import doas.UserDAO;
+import connection.DBConnection;
+import dao.UserDAO;
 import org.bson.Document;
 import org.junit.Test;
-import documents.User;
+import entity.User;
 
 import static org.junit.Assert.*;
 

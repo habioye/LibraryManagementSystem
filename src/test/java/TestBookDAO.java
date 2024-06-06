@@ -1,12 +1,10 @@
-import com.mongodb.client.MongoCollection;
-import database.DBConnection;
-import doas.BookDAO;
-import documents.Book;
+import connection.DBConnection;
+import dao.BookDAO;
+import entity.Book;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Test;
-import java.time.Instant;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 

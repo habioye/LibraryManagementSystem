@@ -1,8 +1,8 @@
-package menus;
+package consoleUI;
 
-import doas.BookDAO;
-import documents.Book;
-import documents.User;
+import dao.BookDAO;
+import entity.Book;
+import entity.User;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;

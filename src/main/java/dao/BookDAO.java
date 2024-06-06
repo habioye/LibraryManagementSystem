@@ -1,13 +1,12 @@
-package doas;
+package dao;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import documents.Book;
+import entity.Book;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 

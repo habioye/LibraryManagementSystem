@@ -1,9 +1,9 @@
-package menus;
+package consoleUI;
 
-import database.DBConnection;
-import doas.BookDAO;
-import doas.UserDAO;
-import documents.User;
+import connection.DBConnection;
+import dao.BookDAO;
+import dao.UserDAO;
+import entity.User;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

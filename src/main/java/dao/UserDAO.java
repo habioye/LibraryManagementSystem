@@ -1,13 +1,12 @@
-package doas;
+package dao;
 
 
 import com.mongodb.BasicDBList;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import database.DBConnection;
-import documents.Book;
-import documents.User;
+import entity.Book;
+import entity.User;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;

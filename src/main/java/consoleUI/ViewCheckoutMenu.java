@@ -1,4 +1,4 @@
-package menus;
+package consoleUI;
 
 public class ViewCheckoutMenu {
 }

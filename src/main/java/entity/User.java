@@ -1,4 +1,4 @@
-package documents;
+package entity;
 
 public class User {
     private final String userID;

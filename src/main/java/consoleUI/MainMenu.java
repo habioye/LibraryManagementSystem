@@ -1,9 +1,9 @@
-package menus;
+package consoleUI;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import documents.User;
+import entity.User;
 
 public class MainMenu {
 
