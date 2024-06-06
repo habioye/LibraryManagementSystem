@@ -22,9 +22,10 @@ public class BookDAO {
 //        return null;
 //    }
     // gets the transactio for  a specific user.
-    public static void getTransaction(MongoCollection<Document> collection, String username) { // TODO: make sure that the most recent one comes first.
+    public static boolean getTransaction(MongoCollection<Document> collection, String username) { // TODO: make sure that the most recent one comes first.
         Document filter = new Document("username", username);
         FindIterable<Document> result = collection.find(filter);
+        if (result.wasAcknowledged() == false) return false;
         String transactionID, userID, bookID, checkoutDate, dueDate;
         boolean checkedOut;
 
@@ -40,14 +41,18 @@ public class BookDAO {
             System.out.println(trans.toString());
 
         }
+
+        return true;
 
     }
 
     // gets all the transactions for the admin.
-    public static void adminGetTransaction(MongoCollection<Document> collection) {
+    public static boolean adminGetTransaction(MongoCollection<Document> collection) {
         FindIterable<Document> result = collection.find();
+        if (result.wasAcknowleged() == false) return false;
         String transactionID, userID, bookID, checkoutDate, dueDate;
         boolean checkedOut;
+
 
         for (var doc : result) {
             transactionID = doc.getString("_id");
@@ -61,6 +66,7 @@ public class BookDAO {
             System.out.println(trans.toString());
 
         }
+        return true;
     }
 
 }
