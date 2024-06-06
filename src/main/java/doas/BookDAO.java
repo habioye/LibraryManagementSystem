@@ -9,6 +9,9 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class BookDAO {
     static private MongoCollection<Document> collection;
@@ -31,8 +34,24 @@ public class BookDAO {
     }
     public static void deleteBook(String id){
         if (collection != null){
-            collection.deleteOne(new Document("_id",new ObjectId(id)));
+            collection.deleteOne(new Document("_id", new ObjectId(id)));
         } else {
+            System.out.println("Initialize Database");
+        }
+    }
+
+    public static void checkedOutBook(String id){
+        if (collection != null){
+            collection.updateOne(eq("_id", id), new Document("$set", new Document("checkedOut", true)));
+        }else {
+            System.out.println("Initialize Database");
+        }
+    }
+
+    public static void checkedInBook(String id){
+        if (collection != null){
+            collection.updateOne(eq("_id", id), new Document("$set", new Document("checkedOut", false)));
+        }else {
             System.out.println("Initialize Database");
         }
     }
@@ -47,7 +66,15 @@ public class BookDAO {
             };
             Document query;
             if (queryType.equals("genres")){
-                query = new Document(queryType, new Document("$all", Arrays.asList(name.split(" "))));
+                List<Pattern> regexPatterns = new ArrayList<>();
+                for (String genre : name.split(" ")) {
+                    // Create a case-insensitive regex pattern for each genre
+                    Pattern pattern = Pattern.compile(genre, Pattern.CASE_INSENSITIVE);
+                    regexPatterns.add(pattern);
+                }
+
+                // Construct the MongoDB query using the $all operator and the regex patterns
+                query = new Document("genres", new Document("$all", regexPatterns));
             } else {
                 query = new Document(queryType, new Document("$regex", name).append("$options", "i"));
             }
@@ -96,5 +123,7 @@ public class BookDAO {
             return null;
         }
     }
+
+
 
 }
