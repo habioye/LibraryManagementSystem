@@ -1,5 +1,7 @@
 package menus;
 
+import database.DBConnection;
+import doas.BookDAO;
 import doas.UserDAO;
 import documents.User;
 
@@ -7,6 +9,13 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class LoginMenu {
+
+    static {
+        DBConnection db = new DBConnection();
+        BookDAO.BookDAOInit(db.getCollection("BookTest"));
+        UserDAO.initializeCollections(db.getCollection("UserTest"), db.getCollection("BookTest"));
+        //UserDAO.UserDAOInit(db.getCollection("UserTest"));
+    }
 
     private static boolean validateUsername(String username) {
         username = username.trim();
@@ -38,7 +47,7 @@ public class LoginMenu {
         return true;
     }
 
-    // Prompt user for registration details (username and password)
+    // Prompt user for registration details
     private static void registerMenu(Scanner sc) {
 
         try {
@@ -48,14 +57,19 @@ public class LoginMenu {
             System.out.println("Password:");
             String password = sc.nextLine();
 
+            System.out.println("First name:");
+            String firstName = sc.nextLine();
+
+            System.out.println("Last name:");
+            String lastName = sc.nextLine();
+
             // Check if username and password are valid
             if (!validateUsername(username))
                 return;
             if (!validatePassword(password))
                 return;
 
-
-            if (UserDAO.createNewUser(username, password))
+            if (UserDAO.createNewUser(username, password, firstName, lastName))
                 System.out.println("Successfully registered");
             else
                 System.out.println("Failed to register");
