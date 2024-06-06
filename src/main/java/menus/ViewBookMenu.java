@@ -10,13 +10,9 @@ import java.util.Scanner;
 
 public class ViewBookMenu {
 
-    private static final String COLLECTION_NAME = "BookTest";
-
-    // TODO
     private static void viewAllBooksMenu(Scanner sc, User user) {
 
         ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBooks();
-
         for (Book b : books) {
             System.out.println(b);
         }
@@ -28,25 +24,26 @@ public class ViewBookMenu {
         int mode = 0;
         switch (menuInput) {
             case 2:
-                System.out.println("Enter the book title you're searching for:");
                 mode = 1;
+                System.out.println("Enter the book title you're searching for:");
                 break;
             case 3:
-                System.out.println("Enter the author you're searching for:");
                 mode = 2;
+                System.out.println("Enter the author you're searching for:");
                 break;
             case 4:
-                System.out.println("Enter the genres you're searching for, separated by spaces:");
                 mode = 3;
+                System.out.println("Enter the genres you're searching for, separated by spaces:");
                 break;
         }
 
         String input = sc.nextLine().trim();
-        ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBookUsingFilter(mode, input);
 
+        ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBookUsingFilter(mode, input);
         for (Book b : books) {
             System.out.println(b);
         }
+
     }
 
     public static void run(Scanner sc, User user) {
