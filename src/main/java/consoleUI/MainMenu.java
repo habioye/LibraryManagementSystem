@@ -3,6 +3,7 @@ package consoleUI;
 import dao.BookDAO;
 import dao.TransactionDAO;
 import entity.Book;
+import entity.Transaction;
 import entity.User;
 
 import java.util.ArrayList;
