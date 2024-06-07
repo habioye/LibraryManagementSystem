@@ -2,10 +2,12 @@ package consoleUI;
 
 import dao.BookDAO;
 import dao.TransactionDAO;
+import dao.UserDAO;
 import entity.Book;
 import entity.Transaction;
 import entity.User;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -59,8 +61,12 @@ public class ViewCheckedInBookAdmin {
             for (Book book : books) {
                 System.out.println(book);
             }
-
-            System.out.println("Enter a book number to check in book or (q) to quit:");
+            List<User> usersObj = UserDAO.getAllUsers();
+            List<String> userName = new ArrayList<>();
+            for (User u: usersObj){
+                userName.add(u.getUsername());
+            }
+            System.out.println("Enter a book number to check out a book or (q) to quit:");
             while (true){
                 try {
                     String in = sc.nextLine();
@@ -68,15 +74,23 @@ public class ViewCheckedInBookAdmin {
                         break;
                     }
                     int input = Integer.parseInt(in);
-                    BookDAO.checkInBook(books.get(input-1).getBookId());
-                    TransactionDAO.checkInTransaction(books.get(input-1).getTransactionId());
-                    System.out.println("Book checked in");
+                    System.out.println("Enter a number to choose user: " + userName);
+                    in = sc.nextLine();
+                    int userInput = Integer.parseInt(in);
+                    if (TransactionDAO.addTransaction(usersObj.get(userInput-1).getUserID(), books.get(input-1).getBookTitle()))
+                        System.out.println("Successfully checked out: " + books.get(input-1).getBookTitle());
+                    else
+                        System.out.println("Check out failed");
+                    //TransactionDAO.checkInTransaction(books.get(input-1).getTransactionId());
                     break;
                 } catch (Exception e){
                     System.out.println("try a number from 1");
                 }
             }
 
+        }
+        else {
+            System.out.println("That book is not currently available");
         }
 
     }

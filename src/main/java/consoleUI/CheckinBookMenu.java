@@ -42,7 +42,7 @@ public class CheckinBookMenu {
 
             // Get the book and its transaction
             Book book = books.get(input);
-            Transaction transaction = TransactionDAO.getTransactionsByUserId();
+            //Transaction transaction = TransactionDAO.getTransactionsByUserId();
 
 
 
