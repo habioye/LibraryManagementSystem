@@ -123,6 +123,10 @@ public class BookDAO {
         }
     }
 
+    // TODO
+    public static Book getBookByTitle(){
 
+        return null;
+    }
 
 }

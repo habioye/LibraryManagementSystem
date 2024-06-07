@@ -1,70 +1,88 @@
 package dao;
 
-/*
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import entity.Transaction;
+
 public class TransactionDAO {
-//    MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-//    MongoDatabase database = mongoClient.getDatabase("LibraryManagement");
-//    MOngoCollection<Doucment> collection = dtabase.getCollections("Transaction")
-//    MongoCollection<Document> collection;
 
-    //    public BookDAO(String collection){
-//        this.collection = new DBConnection().getCollection(collection);
-//    }
-//
-//    public void addBook(){
-//
-//    }
-//    public Book getBook(){
-//        return null;
-//    }
-    // gets the transactio for  a specific user.
-    public static boolean getTransaction(MongoCollection<Document> collection, String username) { // TODO: make sure that the most recent one comes first.
-        Document filter = new Document("username", username);
-        FindIterable<Document> result = collection.find(filter);
-        if (result.wasAcknowledged() == false) return false;
-        String transactionID, userID, bookID, checkoutDate, dueDate;
-        boolean checkedOut;
+    static private MongoCollection<Document> collection;
 
-        for (var doc : result) {
-            transactionID = doc.getString("_id");
-            userID = doc.getString("transactionID");
-            bookID = doc.getString("transactionID");
-            checkedoutDate = doc.getString("transactionID");
-            dueDate = doc.getString("dueDate");
-            checkedOut = doc.getBoolean("checkOUt")
-
-            Transaction trans = new Transaction(transactionID,userID,bookID,checkoutDate,dueDate,checkedOut);
-            System.out.println(trans.toString());
-
-        }
-
-        return true;
-
+    public static void initCollection(MongoCollection<Document> collect) {
+        collection = collect;
     }
 
-    // gets all the transactions for the admin.
-    public static boolean adminGetTransaction(MongoCollection<Document> collection) {
+    // Create transaction record for a user checking out a book
+    public static boolean addTransaction(String userId, String bookId) {
+
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+
+        Document document = new Document()
+                .append("userId", userId)
+                .append("bookId", bookId)
+                .append("checkoutDate", currentTimestamp)
+                .append("dueDate", currentTimestamp.getTime() + dayToMilliseconds(14))  // Add x days
+                .append("checkedOut", false);
+        collection.insertOne(document);
+
+        return false;
+    }
+
+    public static ArrayList<Transaction> getAllTransactions() {
+
         FindIterable<Document> result = collection.find();
-        if (result.wasAcknowleged() == false) return false;
-        String transactionID, userID, bookID, checkoutDate, dueDate;
-        boolean checkedOut;
+        ArrayList<Transaction> transactions = new ArrayList<>();
 
+        // Check if operation was successful
+        if (!result.iterator().hasNext())
+            return transactions;
 
-        for (var doc : result) {
-            transactionID = doc.getString("_id");
-            userID = doc.getString("transactionID");
-            bookID = doc.getString("transactionID");
-            checkedoutDate = doc.getString("transactionID");
-            dueDate = doc.getString("dueDate");
-            checkedOut = doc.getBoolean("checkOUt");
-
-            Transaction trans = new Transaction(transactionID,userID,bookID,checkoutDate,dueDate,checkedOut);
-            System.out.println(trans.toString());
-
+        for (Document d : result) {
+            String transactionId = d.get("_id").toString();
+            String userId = d.get("userId").toString();
+            String bookId = d.get("bookId").toString();
+            // TODO test if type cast works
+            Timestamp checkoutDate = (Timestamp) d.get("checkoutDate");
+            Timestamp dueDate = (Timestamp) d.get("dueDate");
+            boolean checkedOut = d.getBoolean("checkedOut");
+            transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
         }
-        return true;
+
+        return transactions;
+    }
+
+    // Get all transactions for given user
+    public static ArrayList<Transaction> getTransactionsByUsername(String username) {
+
+        Document filter = new Document("username", username);
+        FindIterable<Document> result = collection.find(filter);
+
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        // Check if operation was successful
+        if (!result.iterator().hasNext())
+            return transactions;
+
+        for (Document d : result) {
+            String transactionId = d.get("_id").toString();
+            String userId = d.get("userId").toString();
+            String bookId = d.get("bookId").toString();
+            // TODO test if type cast works
+            Timestamp checkoutDate = (Timestamp) d.get("checkoutDate");
+            Timestamp dueDate = (Timestamp) d.get("dueDate");
+            boolean checkedOut = d.getBoolean("checkedOut");
+            transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
+        }
+
+        return transactions;
+    }
+
+    private static Long dayToMilliseconds(int days) {
+        return Long.valueOf(days * 24 * 60 * 60 * 1000);
     }
 
 }
-
- */
