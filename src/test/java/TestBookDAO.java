@@ -2,7 +2,6 @@ import connection.DBConnection;
 import dao.BookDAO;
 import dao.UserDAO;
 import entity.Book;
-import entity.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Test;
@@ -127,13 +126,13 @@ public class TestBookDAO {
         BookDAO.addBook("Title2", "Author2", "Description2", genres);
 
 
-        List<Book> books = BookDAO.viewAllCheckedOutBook();
+        List<Book> books = BookDAO.viewChecksBook(true);
         assertEquals(0, books.size());
 
         List<Book> allBooks = BookDAO.getBooks();
         BookDAO.checkOutBook(allBooks.get(0).getBookId());
 
-        books = BookDAO.viewAllCheckedOutBook();
+        books = BookDAO.viewChecksBook(true);
         assertEquals(1, books.size());
         assertEquals("Title1", books.get(0).getBookTitle());
     }
@@ -142,7 +141,7 @@ public class TestBookDAO {
     @Test
     public void test_collection_not_initialized() {
         BookDAO.BookDAOInit(null);
-        List<Book> books = BookDAO.viewAllCheckedOutBook();
+        List<Book> books = BookDAO.viewChecksBook(true);
         assertNull(books);
     }
 
@@ -157,7 +156,7 @@ public class TestBookDAO {
         SetUpTest.setUp();
 
         // Test
-        List<Book> checkedOutBooks = BookDAO.viewAllCheckedOutBook();
+        List<Book> checkedOutBooks = BookDAO.viewChecksBook(true);
 
         // Assertions
         assertNotNull(checkedOutBooks);
@@ -173,7 +172,7 @@ public class TestBookDAO {
         dbConnection.getCollection("BookTest").insertOne(new Document("title", "Title1"));
         dbConnection.getCollection("BookTest").insertOne(new Document("author", "Author1"));
 
-        // Test the method viewAllCheckedOutBook
+        // Test the method viewChecksBook
         List<Book> checkedOutBooks = BookDAO.getBooks();
 
         // Assertion - checkedOutBooks should be empty as documents do not match the expected schema
