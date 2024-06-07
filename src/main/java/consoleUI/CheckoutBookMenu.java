@@ -14,13 +14,13 @@ public class CheckoutBookMenu {
 
         System.out.println("Enter title of the book:");
         try {
-            String input = sc.nextLine();
+            String input = sc.nextLine().trim();
             Book book = BookDAO.getBookByTitle(input);
 
             if (book == null)
                 return;  // Return to main menu
 
-            if (TransactionDAO.addTransaction(user.getUserID(), book.getBookId()))
+            if (TransactionDAO.addTransaction(user.getUserID(), book.getBookTitle()))
                 System.out.println("Successfully checked out: " + book.getBookTitle());
             else
                 System.out.println("Check out failed");

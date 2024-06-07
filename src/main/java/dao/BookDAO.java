@@ -126,14 +126,13 @@ public class BookDAO {
         }
     }
 
-    // TODO test this
     public static Book getBookByTitle(String title) {
         if (collection != null) {
             Document filter = new Document("title", title);
             Document result = collection.find(filter).first();
 
             if (result == null) {
-                System.out.println("No results found");
+                System.out.println("Book not found");
                 return null;
             }
 

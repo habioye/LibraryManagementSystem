@@ -2,10 +2,12 @@ package dao;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import entity.Book;
 import org.bson.Document;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import entity.Transaction;
 import org.bson.types.ObjectId;
@@ -18,20 +20,32 @@ public class TransactionDAO {
         collection = collect;
     }
 
-
     // Create transaction record for a user checking out a book
-    public static boolean addTransaction(String userId, String bookId) {
+    public static boolean addTransaction(String userId, String bookTitle) {
 
-        // TODO change String bookId to String bookTitle
-        // TODO check if given book is checked out
-        // if checked out, check if there's another copy available
+        ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBookUsingFilter(1, bookTitle);
+        if (books == null || books.size() == 0) {
+            System.out.println("Book not found");
+            return false;
+        }
 
+        // Get first book that's not checked out
+        Book book = null;
+        for (Book b : books) {
+            if (!b.isCheckout()) {
+                book = b;
+                break;
+            }
+        }
+
+        // TODO need to set book to checked out
+        // Insert transaction
         Timestamp checkoutDate = new Timestamp(System.currentTimeMillis());
         Timestamp dueDate = new Timestamp(checkoutDate.getTime() + dayToMilliseconds(14));
 
         Document document = new Document()
                 .append("userId", new ObjectId(userId))
-                .append("bookId", new ObjectId(bookId))
+                .append("bookId", new ObjectId(book.getBookId()))
                 .append("checkoutDate", checkoutDate)
                 .append("dueDate", dueDate)
                 .append("checkedOut", true);
@@ -65,9 +79,9 @@ public class TransactionDAO {
     }
 
     // Get all transactions for given user
-    public static ArrayList<Transaction> getTransactionsByUsername(String username) {
+    public static ArrayList<Transaction> getTransactionsByUserId(String userId) {
 
-        Document filter = new Document("username", username);
+        Document filter = new Document("userId", new ObjectId(userId));
         FindIterable<Document> result = collection.find(filter);
 
         ArrayList<Transaction> transactions = new ArrayList<>();
@@ -77,11 +91,19 @@ public class TransactionDAO {
 
         for (Document d : result) {
             String transactionId = d.get("_id").toString();
-            String userId = d.get("userId").toString();
             String bookId = d.get("bookId").toString();
-            // TODO test if type cast works
-            Timestamp checkoutDate = (Timestamp) d.get("checkoutDate");
-            Timestamp dueDate = (Timestamp) d.get("dueDate");
+
+            // Convert date to timestamp
+            Date dateResult = (Date) d.get("checkoutDate");
+            Timestamp checkoutDate = new Timestamp(dateResult.getTime());
+
+            dateResult = (Date) d.get("dueDate");
+            Timestamp dueDate = new Timestamp(dateResult.getTime());
+
+            //Timestamp checkoutDate = Timestamp.valueOf(d.get("checkoutDate").toString());
+            //Timestamp dueDate = (Timestamp) d.get("dueDate");
+
+            dueDate.getTime();
             boolean checkedOut = d.getBoolean("checkedOut");
             transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
         }
