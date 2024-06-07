@@ -7,13 +7,14 @@ import java.sql.Timestamp;
 import static dao.UserDAO.getUserByID;
 
 public class Transaction {
-    private String transactionId;
-    private String userId;
-    private String bookId;
-    private Timestamp checkoutDate;
-    private Timestamp dueDate;
-    private boolean checkedOut;
+    private String transactionId; // id for transactin
+    private String userId; // id generated for user
+    private String bookId; // id for checkedout book
+    private Timestamp checkoutDate; // data for the checkout
+    private Timestamp dueDate; // date when the book should be checked in by
+    private boolean checkedOut; // determines if the book is currently checkkedout
 
+    // Constructor method
     public Transaction(String transactionId, String userId, String bookId, Timestamp checkoutDate, Timestamp dueDate, boolean checkedOut) {
         this.transactionId = transactionId;
         this.userId = userId;
@@ -71,6 +72,7 @@ public class Transaction {
         this.checkedOut = checkedOut;
     }
 
+    // Created a good formatting for the data.
     @Override
     public String toString() {
 
