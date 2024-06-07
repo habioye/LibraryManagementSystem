@@ -27,6 +27,8 @@ public class CheckoutBookMenu {
             else
                 System.out.println("Check out failed");
 
+            System.out.println("Hit enter to return");
+            sc.nextLine();
 
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
