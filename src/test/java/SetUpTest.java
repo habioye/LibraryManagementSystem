@@ -18,6 +18,9 @@ public class SetUpTest {
         BookDAO.addBook("Title3","Author1","Des3", Arrays.asList("Genre1","Genre4"));
         BookDAO.addBook("Title4","Author1","Des4", Arrays.asList("Genre5","Genre3"));
         BookDAO.addBook("Title5","Author3","Des5", Arrays.asList("Genre6","Genre7"));
+        BookDAO.addBook("Title6","Author4","Des6", Arrays.asList("Genre6","Genre7"));
+        BookDAO.addBook("Title6","Author4","Des6", Arrays.asList("Genre6","Genre7"));
+        BookDAO.addBook("Title6","Author4","Des6", Arrays.asList("Genre6","Genre7"));
 
         MongoCollection<Document> userCollection = db.getCollection("UserTest");
         MongoCollection<Document> bookCollection = db.getCollection("BookTest");
