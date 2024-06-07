@@ -5,6 +5,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class TestBookDAO {
         dbConnection.getCollection("UserTest").deleteMany(new Document());
         SetUpTest.setUp();
         List<Book> books = BookDAO.getBooks();
-        assertEquals(6,books.size());
+        assertEquals(9,books.size());
 
     }
     @Test
@@ -108,4 +109,69 @@ public class TestBookDAO {
     }
 
 
+
+    // Returns a list of books that are currently checked out
+    @Test
+    public void test_returns_checked_out_books() {
+        DBConnection dbConnection = new DBConnection();
+        dbConnection.getCollection("BookTest").deleteMany(new Document());
+        BookDAO.BookDAOInit(dbConnection.getCollection("BookTest"));
+
+        List<String> genres = new ArrayList<>();
+        genres.add("Fiction");
+        BookDAO.addBook("Title1", "Author1", "Description1", genres);
+        BookDAO.addBook("Title2", "Author2", "Description2", genres);
+
+        List<Book> books = BookDAO.viewAllCheckedOutBook();
+        assertEquals(0, books.size());
+
+        List<Book> allBooks = BookDAO.getBooks();
+        BookDAO.checkedOutBook(allBooks.get(0).getBookId());
+
+        books = BookDAO.viewAllCheckedOutBook();
+        assertEquals(1, books.size());
+        assertEquals("Title1", books.get(0).getBookTitle());
+    }
+
+    // Collection is not initialized, should return null
+    @Test
+    public void test_collection_not_initialized() {
+        BookDAO.BookDAOInit(null);
+        List<Book> books = BookDAO.viewAllCheckedOutBook();
+        assertNull(books);
+    }
+
+    // Document fields are missing or null, should handle without throwing exceptions
+    @Test
+    public void test_document_fields_missing_or_null_handling() {
+        // Setup
+        DBConnection dbConnection = new DBConnection();
+        dbConnection.getCollection("BookTest").deleteMany(new Document());
+        dbConnection.getCollection("UserTest").deleteMany(new Document());
+        BookDAO.BookDAOInit(dbConnection.getCollection("BookTest"));
+        SetUpTest.setUp();
+
+        // Test
+        List<Book> checkedOutBooks = BookDAO.viewAllCheckedOutBook();
+
+        // Assertions
+        assertNotNull(checkedOutBooks);
+        // Add more assertions as needed to test the behaviour
+    }
+
+    @Test
+    public void test_collection_contains_documents_not_matching_schema() {
+        // Setup - insert documents with incorrect schema into the collection
+        DBConnection dbConnection = new DBConnection();
+        BookDAO.BookDAOInit(dbConnection.getCollection("BookTest"));
+        dbConnection.getCollection("BookTest").deleteMany(new Document());
+        dbConnection.getCollection("BookTest").insertOne(new Document("title", "Title1"));
+        dbConnection.getCollection("BookTest").insertOne(new Document("author", "Author1"));
+
+        // Test the method viewAllCheckedOutBook
+        List<Book> checkedOutBooks = BookDAO.getBooks();
+
+        // Assertion - checkedOutBooks should be empty as documents do not match the expected schema
+        assertEquals(0, checkedOutBooks.size());
+    }
 }

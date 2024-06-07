@@ -1,11 +1,11 @@
 package connection;
 
-
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+// Constructor to establish dataBase Connection
 public class DBConnection {
     private final String CONNECTIONSTRING = "mongodb://localhost:27017";
     private final String DBNAME = "LibraryManagement";
@@ -19,6 +19,7 @@ public class DBConnection {
 
     }
 
+    // return a collection based on input string
     public MongoCollection<Document> getCollection(String DBCOLLECTION) {
         return database.getCollection(DBCOLLECTION);
     }
