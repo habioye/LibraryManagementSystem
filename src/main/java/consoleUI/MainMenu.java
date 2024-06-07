@@ -97,7 +97,7 @@ public class MainMenu {
                         CheckoutBookMenu.run(sc, user);
                         break;
                     case 5:
-                        System.out.println("To be implemented");
+                        CheckinBookMenu.run(sc, user);
                         break;
                     case 6:
                         return; // Return to login menu
