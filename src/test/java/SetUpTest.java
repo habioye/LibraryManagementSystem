@@ -47,6 +47,7 @@ public class SetUpTest {
         userCollection.insertOne(User2);
 
         TransactionDAO.addTransaction(User2.get("_id").toString(), "Title1");
+        TransactionDAO.addTransaction(User2.get("_id").toString(), "Title2");
 
         userCollection.insertOne(new Document("username", "admin")
                 .append("password","admin")

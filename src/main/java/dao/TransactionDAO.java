@@ -205,10 +205,12 @@ public class TransactionDAO {
         });
 
         if(overDueBooks.isEmpty())
-            return null;
+            return new ArrayList<>();
 
         return overDueBooks;
     }
+
+    
 
     private static Long dayToMilliseconds(int days) {
         return Long.valueOf(days * 24 * 60 * 60 * 1000);

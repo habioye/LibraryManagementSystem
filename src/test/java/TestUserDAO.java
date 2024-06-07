@@ -11,6 +11,64 @@ import static org.junit.Assert.*;
 public class TestUserDAO {
 
     @Test
+    public void testCreateNewUser() {
+
+        DBConnection connect = new DBConnection();
+        connect.getCollection("BookTest").deleteMany(new Document());
+        connect.getCollection("UserTest").deleteMany(new Document());
+        SetUpTest.setUp();
+
+        // DEFAULT USERNAME FOR TEST: user1
+        // DEFAULT PASSWORD FOR TEST: user1
+        String username = "user1";
+        String password = "user1";
+
+        MongoCollection<Document> user = connect.getCollection("UserTest");
+        MongoCollection<Document> book = connect.getCollection("BookTest");
+        UserDAO.initializeCollections(user, book);
+
+        assertFalse(UserDAO.createNewUser(username, password, "ant", "yoo"));
+        assertTrue(UserDAO.createNewUser("newUser1", "newUser1", "ant", "yoo"));
+        assertTrue(UserDAO.createNewUser("newUser2", "newUser2", "ant", "yoo"));
+        assertFalse(UserDAO.createNewUser("newUser2", "newUser2", "ant", "yoo"));
+        assertTrue(UserDAO.createNewUser("newUser3", "newUser2", "ant", "yoo"));
+        assertFalse(UserDAO.createNewUser("newUser3", "newUser2", "ant", "yoo"));
+    }
+
+    @Test
+    public void testGetUserByID() {
+        DBConnection connect = new DBConnection();
+        connect.getCollection("BookTest").deleteMany(new Document());
+        connect.getCollection("UserTest").deleteMany(new Document());
+        SetUpTest.setUp();
+
+        // DEFAULT USERNAME FOR TEST: user1
+        // DEFAULT PASSWORD FOR TEST: user1
+        String username = "user1";
+        String password = "user1";
+
+        MongoCollection<Document> user = connect.getCollection("UserTest");
+        MongoCollection<Document> book = connect.getCollection("BookTest");
+        UserDAO.initializeCollections(user, book);
+
+        User newUser = UserDAO.getUser(username);
+        User newUserByID = UserDAO.getUserByID(newUser.getUserID());
+
+        assertNotNull(newUser);
+        assertNotNull(newUserByID);
+
+        assertEquals(newUser.getUserID(), newUserByID.getUserID());
+        assertEquals(newUser.getUsername(), newUserByID.getUsername());
+        assertEquals(newUser.getPassword(), newUserByID.getPassword());
+        assertEquals(newUser.getRole(), newUserByID.getRole());
+        assertEquals(newUser.getFirstName(), newUserByID.getFirstName());
+        assertEquals(newUser.getLastName(), newUserByID.getLastName());
+        assertEquals(newUser.getCheckedOutBooks(), newUserByID.getCheckedOutBooks());
+
+
+    }
+
+    @Test
     public void testGetUser() {
 
         DBConnection connect = new DBConnection();
@@ -59,31 +117,6 @@ public class TestUserDAO {
         assertFalse(UserDAO.authenticateUser("", ""));
         assertFalse(UserDAO.authenticateUser("", password));
 
-    }
-
-    @Test
-    public void testCreateNewUser() {
-
-        DBConnection connect = new DBConnection();
-        connect.getCollection("BookTest").deleteMany(new Document());
-        connect.getCollection("UserTest").deleteMany(new Document());
-        SetUpTest.setUp();
-
-        // DEFAULT USERNAME FOR TEST: user1
-        // DEFAULT PASSWORD FOR TEST: user1
-        String username = "user1";
-        String password = "user1";
-
-        MongoCollection<Document> user = connect.getCollection("UserTest");
-        MongoCollection<Document> book = connect.getCollection("BookTest");
-        UserDAO.initializeCollections(user, book);
-
-        assertFalse(UserDAO.createNewUser(username, password, "ant", "yoo"));
-        assertTrue(UserDAO.createNewUser("newUser1", "newUser1", "ant", "yoo"));
-        assertTrue(UserDAO.createNewUser("newUser2", "newUser2", "ant", "yoo"));
-        assertFalse(UserDAO.createNewUser("newUser2", "newUser2", "ant", "yoo"));
-        assertTrue(UserDAO.createNewUser("newUser3", "newUser2", "ant", "yoo"));
-        assertFalse(UserDAO.createNewUser("newUser3", "newUser2", "ant", "yoo"));
     }
 
     @Test

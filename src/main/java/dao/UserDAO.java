@@ -67,7 +67,7 @@ public class UserDAO {
         }
 
         // Acquire all users with provided id.
-        Document filter = new Document("_id", userID);
+        Document filter = new Document("_id", new ObjectId(userID));
         FindIterable<Document> result = userCollection.find(filter);
 
         // Create user objects with that id.
@@ -88,7 +88,7 @@ public class UserDAO {
 
         // If multiple users with that id, throw an exception.
         if(usersGrabbed.size() > 1)
-            throw new RuntimeException("SERVER ERROR: multiple users with the same username!");
+            throw new RuntimeException("SERVER ERROR: multiple users with the same ID!");
 
         // Return user.
         return usersGrabbed.getFirst();
@@ -215,6 +215,30 @@ public class UserDAO {
 
         // Return all checked out books.
         return userCheckOutBooks;
+    }
+
+    public static ArrayList<User> getAllUsers() {
+        if(userCollection == null || bookCollection == null) {
+            System.out.println("ERROR: Class was not initialized!");
+            return null;
+        }
+
+        Document filter = new Document("role", "user");
+        FindIterable<Document> result = userCollection.find(filter);
+
+        ArrayList<User> allUsers = new ArrayList<>();
+        for(Document doc: result) {
+            List<String> checkedOutBooks = doc.getList("checkedOutBooks", String.class);
+            User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
+                    doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                    checkedOutBooks.toArray(new String[0]));
+            allUsers.add(user);
+        }
+
+        if(allUsers.isEmpty())
+            return new ArrayList<>();
+
+        return allUsers;
     }
 
 }
