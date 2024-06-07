@@ -67,7 +67,7 @@ public class UserDAO {
         }
 
         // Acquire all users with provided id.
-        Document filter = new Document("_id", userID);
+        Document filter = new Document("_id", new ObjectId(userID));
         FindIterable<Document> result = userCollection.find(filter);
 
         // Create user objects with that id.

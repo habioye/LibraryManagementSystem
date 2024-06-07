@@ -2,6 +2,8 @@ package entity;
 
 import java.sql.Timestamp;
 
+import static dao.UserDAO.getUserByID;
+
 public class Transaction {
     private String transactionId;
     private String userId;
@@ -72,7 +74,7 @@ public class Transaction {
         return "Transaction{" +
                 "transactionId='" + transactionId + '\'' +
                 ", userId='" + userId + '\'' +
-                ", userName='" + getUserById(userId) + '\'' +
+                ", userName='" + getUserByID(userId) + '\'' +
                 ", bookId='" + bookId + '\'' +
                 ", checkoutDate=" + checkoutDate +
                 ", dueDate=" + dueDate +
