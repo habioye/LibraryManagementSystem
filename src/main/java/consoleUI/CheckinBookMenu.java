@@ -2,12 +2,14 @@ package consoleUI;
 
 import dao.BookDAO;
 import dao.TransactionDAO;
+import dao.UserDAO;
 import entity.Book;
 import entity.Transaction;
 import entity.User;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class CheckinBookMenu {
@@ -24,6 +26,7 @@ public class CheckinBookMenu {
 
         if (books == null || books.isEmpty()) {
             System.out.println("No checkouts found");
+            return;
         } else {
             int index = 0;
             for (Book b : books) {
@@ -40,12 +43,9 @@ public class CheckinBookMenu {
             sc.nextLine();
             input -= 1;   // Adjust user's input to 0 based index
 
-            // Get the book and its transaction
-            Book book = books.get(input);
             // TODO the book's transaction
-            //Transaction transactions = TransactionDAO.getTransactionsByUserId(book.getBookId());
-
-
+            System.out.println("Not Implemented Yet");
+            return;
 
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
