@@ -4,6 +4,8 @@ import dao.UserDAO;
 
 import java.sql.Timestamp;
 
+import static dao.UserDAO.getUserByID;
+
 public class Transaction {
     private String transactionId;
     private String userId;
@@ -71,6 +73,7 @@ public class Transaction {
 
     @Override
     public String toString() {
+
         User user = UserDAO.getUserByID(userId);
         String thickLine = "=========================================";
         String headerLine = "| %-15s | %-20s |";
@@ -90,6 +93,7 @@ public class Transaction {
                         thickLine,
                 "Field", "Value",
                 userId, user.getUsername(),user.getFirstName(), user.getLastName(),checkoutDate, dueDate, checkedOut);
+
     }
 
 }

@@ -20,9 +20,12 @@ public class MainMenu {
         System.out.println("Welcome " + user.getUsername());
         while (true) {
             System.out.println("1. View books");
-            System.out.println("2. View all checkouts");
-            System.out.println("3. Add Book");
-            System.out.println("4. Logout");
+            System.out.println("2. View and Check in Book(s)");
+            System.out.println("3. View and Check out Book(s)");
+            System.out.println("4. Add Book(s)");
+            System.out.println("6. Delete Book(s)");
+            System.out.println("7. Transaction History");
+            System.out.println("8. Logout");
 
             try {
                 int input = sc.nextInt();
@@ -36,9 +39,17 @@ public class MainMenu {
                         ViewCheckedOutBookAdmin.run(sc, user);
                         break;
                     case 3:
-                        System.out.println("To be implemented");
+                        ViewCheckedInBookAdmin.run(sc,user);
                         break;
                     case 4:
+                        return;  // Return to login menu
+                    case 5:
+                        return;  // Return to login menu
+                    case 6:
+                        return;  // Return to login menu
+                    case 7:
+                        return;  // Return to login menu
+                    case 8:
                         return;  // Return to login menu
                     default:
                         System.out.println("Invalid input");
@@ -80,18 +91,7 @@ public class MainMenu {
                         ViewCheckoutMenu.run(sc, user);
                         break;
                     case 3:
-                        ArrayList<String> overdueIds = TransactionDAO.getOverdueBooksByUserID(user.getUserID());
-                        ArrayList<Book> overdueBooks = new ArrayList<>();
-                        for (String id : overdueIds) {
-                            overdueBooks.add(BookDAO.getBookById(id));
-                        }
-
-                        for (Book b : overdueBooks) {
-                            System.out.println(b);
-                        }
-
-                        System.out.println("Hit enter to return");
-                        sc.nextLine();
+                        ViewOverdueMenu.run(sc, user);
                         break;
                     case 4:
                         CheckoutBookMenu.run(sc, user);
