@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import entity.Transaction;
+import org.bson.types.ObjectId;
 
 public class TransactionDAO {
 
@@ -17,19 +18,26 @@ public class TransactionDAO {
         collection = collect;
     }
 
+
     // Create transaction record for a user checking out a book
     public static boolean addTransaction(String userId, String bookId) {
 
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        // TODO change String bookId to String bookTitle
+        // TODO check if given book is checked out
+        // if checked out, check if there's another copy available
+
+        Timestamp checkoutDate = new Timestamp(System.currentTimeMillis());
+        Timestamp dueDate = new Timestamp(checkoutDate.getTime() + dayToMilliseconds(14));
 
         Document document = new Document()
-                .append("userId", userId)
-                .append("bookId", bookId)
-                .append("checkoutDate", currentTimestamp)
-                .append("dueDate", currentTimestamp.getTime() + dayToMilliseconds(14))  // Add x days
-                .append("checkedOut", false);
-        collection.insertOne(document);
+                .append("userId", new ObjectId(userId))
+                .append("bookId", new ObjectId(bookId))
+                .append("checkoutDate", checkoutDate)
+                .append("dueDate", dueDate)
+                .append("checkedOut", true);
 
+        if (collection.insertOne(document).wasAcknowledged())
+            return true;
         return false;
     }
 
