@@ -1,6 +1,8 @@
 import connection.DBConnection;
 import dao.BookDAO;
+import dao.UserDAO;
 import entity.Book;
+import entity.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Test;
@@ -116,6 +118,8 @@ public class TestBookDAO {
         DBConnection dbConnection = new DBConnection();
         dbConnection.getCollection("BookTest").deleteMany(new Document());
         BookDAO.BookDAOInit(dbConnection.getCollection("BookTest"));
+        UserDAO.initializeCollections(dbConnection.getCollection("UserTest"),
+                dbConnection.getCollection("BookTest"));
 
         List<String> genres = new ArrayList<>();
         genres.add("Fiction");
@@ -126,7 +130,7 @@ public class TestBookDAO {
         assertEquals(0, books.size());
 
         List<Book> allBooks = BookDAO.getBooks();
-        BookDAO.checkedOutBook(allBooks.get(0).getBookId());
+        BookDAO.checkOutBook(allBooks.get(0).getBookId(),UserDAO.getUser("user1"));
 
         books = BookDAO.viewAllCheckedOutBook();
         assertEquals(1, books.size());

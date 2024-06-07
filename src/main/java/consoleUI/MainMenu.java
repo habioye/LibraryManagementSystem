@@ -16,7 +16,7 @@ public class MainMenu {
         while (true) {
             System.out.println("1. View books");
             System.out.println("2. View all checkouts");
-            System.out.println("3. Check in a book");
+            System.out.println("3. Add Book");
             System.out.println("4. Logout");
 
             try {
