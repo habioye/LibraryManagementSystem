@@ -205,7 +205,7 @@ public class TransactionDAO {
         });
 
         if(overDueBooks.isEmpty())
-            return null;
+            return new ArrayList<>();
 
         return overDueBooks;
     }
