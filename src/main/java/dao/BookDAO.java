@@ -52,7 +52,7 @@ public class BookDAO {
         }
     }
 
-    public static void checkInBook(String id, User user){
+    public static void checkInBook(String id){
         if (collection != null){
             collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOutBy", ""));
         }else {

@@ -28,7 +28,7 @@ public class MainMenu {
                         System.out.println("To be implemented");
                         break;
                     case 2:
-                        System.out.println("To be implemented");
+                        ViewCheckedOutBookAdmin.run(sc,user);
                         break;
                     case 3:
                         System.out.println("To be implemented");

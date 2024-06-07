@@ -16,6 +16,7 @@ public class ViewCheckedOutBookAdmin {
             System.out.println("""
                     1. View all checkouts books
                     2. Check in books by title
+                    3. Exit
                     """);
             try {
                 int input = sc.nextInt();
@@ -26,7 +27,10 @@ public class ViewCheckedOutBookAdmin {
                         viewAllCheckOutsBooksMenu(sc, user);
                         break;
                     case 2:
-                        return;  // Return to main menu
+                        viewCheckOutsBookByFilter(sc,user);
+                        break;
+                    case 3:
+                        return; // Return to main menu
                     default:
                         System.out.println("Invalid input");
                 }
@@ -54,11 +58,17 @@ public class ViewCheckedOutBookAdmin {
             for (Book b : books) {
                 System.out.println(b);
             }
-            System.out.println("Enter a book number to check in book:");
+            System.out.println("Enter a book number to check in book or (q) to quit:");
             while (true){
                 try {
-                    int input = Integer.parseInt(sc.nextLine());
-                    BookDAO.checkInBook();
+                    String in = sc.nextLine();
+                    if (in.equals("q")){
+                        break;
+                    }
+                    int input = Integer.parseInt(in);
+                    BookDAO.checkInBook(books.get(input-1).getBookId());
+                    System.out.println("Book checked in");
+                    break;
                 } catch (Exception e){
                     System.out.println("try a number from 1");
                 }
