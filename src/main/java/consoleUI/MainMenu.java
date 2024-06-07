@@ -91,18 +91,7 @@ public class MainMenu {
                         ViewCheckoutMenu.run(sc, user);
                         break;
                     case 3:
-                        ArrayList<String> overdueIds = TransactionDAO.getOverdueBooksByUserID(user.getUserID());
-                        ArrayList<Book> overdueBooks = new ArrayList<>();
-                        for (String id : overdueIds) {
-                            overdueBooks.add(BookDAO.getBookById(id));
-                        }
-
-                        for (Book b : overdueBooks) {
-                            System.out.println(b);
-                        }
-
-                        System.out.println("Hit enter to return");
-                        sc.nextLine();
+                        ViewOverdueMenu.run(sc, user);
                         break;
                     case 4:
                         CheckoutBookMenu.run(sc, user);
