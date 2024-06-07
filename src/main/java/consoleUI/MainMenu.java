@@ -25,7 +25,7 @@ public class MainMenu {
 
                 switch (input) {
                     case 1:
-                        System.out.println("To be implemented");
+                        ViewBookMenu.run(sc, user);
                         break;
                     case 2:
                         ViewCheckedOutBookAdmin.run(sc,user);
@@ -71,10 +71,10 @@ public class MainMenu {
                         ViewBookMenu.run(sc, user);
                         break;
                     case 2:
-                        System.out.println("To be implemented");
+                        ViewCheckoutMenu.run(sc, user);
                         break;
                     case 3:
-                        System.out.println("To be implemented");
+                        CheckoutBookMenu.run(sc, user);
                         break;
                     case 4:
                         System.out.println("To be implemented");
