@@ -14,9 +14,9 @@ public class LoginMenu {
     // Establish connection with database and collections
     static {
         DBConnection db = new DBConnection();
-        BookDAO.BookDAOInit(db.getCollection("BookTest"));
-        TransactionDAO.initCollection(db.getCollection("TransactionTest"));
-        UserDAO.initializeCollections(db.getCollection("UserTest"), db.getCollection("BookTest"));
+        BookDAO.BookDAOInit(db.getCollection("Book"));
+        TransactionDAO.initCollection(db.getCollection("Transaction"));
+        UserDAO.initializeCollections(db.getCollection("User"), db.getCollection("Book"));
     }
 
     private static boolean validateUsername(String username) {

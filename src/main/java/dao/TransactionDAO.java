@@ -85,8 +85,11 @@ public class TransactionDAO {
             String userId = d.get("userId").toString();
             String bookId = d.get("bookId").toString();
             // TODO test if type cast works
-            Timestamp checkoutDate = (Timestamp) d.get("checkoutDate");
-            Timestamp dueDate = (Timestamp) d.get("dueDate");
+            Date dateResult = (Date) d.get("checkoutDate");
+            Timestamp checkoutDate = new Timestamp(dateResult.getTime());
+
+            dateResult = (Date) d.get("dueDate");
+            Timestamp dueDate = new Timestamp(dateResult.getTime());
             boolean checkedOut = d.getBoolean("checkedOut");
             transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
         }
