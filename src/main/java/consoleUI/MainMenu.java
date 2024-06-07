@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import dao.TransactionDAO;
+import entity.Transaction;
+import entity.User;
+
 public class MainMenu {
 
     // Menu for an admin
@@ -69,14 +73,13 @@ public class MainMenu {
         }
     }
 
-
     // Menu for a user
     public static void userMenu(Scanner sc, User user) {
 
         System.out.println("Welcome " + user.getUsername());
         while (true) {
             System.out.println("1. View books");
-            System.out.println("2. View your checkouts");
+            System.out.println("2. View your checkout history");
             System.out.println("3. View your overdue books");
             System.out.println("4. Check out a book");
             System.out.println("5. Check in a book");
