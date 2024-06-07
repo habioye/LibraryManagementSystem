@@ -2,6 +2,7 @@ package consoleUI;
 
 import dao.BookDAO;
 import dao.TransactionDAO;
+import dao.UserDAO;
 import entity.Book;
 import entity.Transaction;
 import entity.User;
@@ -48,6 +49,7 @@ public class ViewCheckedOutBookAdmin {
     private static void viewAllCheckOutsBooksMenu(Scanner sc, User user) {
         List<Transaction> transactions =  TransactionDAO.getCheckOutTransactions();
         for (Transaction b : transactions) {
+            System.out.println("Checked Out By: " + UserDAO.getUserByID(b.getUserId()).getUsername());
             System.out.println(BookDAO.getBookById(b.getBookId()));
         }
 
@@ -58,6 +60,7 @@ public class ViewCheckedOutBookAdmin {
         List<Transaction> transactions =  TransactionDAO.viewCheckOutsTransActionUsingTitle(title);
         if (!transactions.isEmpty()){
             for (Transaction transaction : transactions) {
+                System.out.println("Checked Out By: " + UserDAO.getUserByID(transaction.getUserId()).getUsername());
                 System.out.println(BookDAO.getBookById(transaction.getBookId()));
             }
             System.out.println("Enter a book number to check in book or (q) to quit:");
