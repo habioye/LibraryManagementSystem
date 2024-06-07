@@ -5,11 +5,11 @@ import entity.Transaction;
 import entity.User;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ViewCheckoutMenu {
 
+    // Users can view all the books that they checked out.
     public static void run(Scanner sc, User user) {
 
         ArrayList<Transaction> transactions = TransactionDAO.getTransactionsByUserId(user.getUserID());

@@ -3,17 +3,16 @@ package consoleUI;
 import dao.BookDAO;
 import dao.TransactionDAO;
 import dao.UserDAO;
-import entity.Book;
 import entity.Transaction;
 import entity.User;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class ViewCheckedOutBookAdmin {
 
+    // Allows the admin to view the checked out books and to check in books by title.
     public static void run(Scanner sc, User user){
         while(true){
             System.out.println("""
@@ -46,6 +45,7 @@ public class ViewCheckedOutBookAdmin {
             }
         }
     }
+    // Allows the user to view all checkedout books.
     private static void viewAllCheckOutsBooksMenu(Scanner sc, User user) {
         List<Transaction> transactions =  TransactionDAO.getCheckOutTransactions();
         for (Transaction b : transactions) {
@@ -54,6 +54,7 @@ public class ViewCheckedOutBookAdmin {
         }
 
     }
+    // Allows the user to view the checkedoutbooks.
     private static void viewCheckOutsBookByFilter(Scanner sc, User user) {
         System.out.println("Enter book title you want to check in:");
         String title = sc.nextLine();

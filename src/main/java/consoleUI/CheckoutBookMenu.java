@@ -1,17 +1,17 @@
 
 package consoleUI;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import dao.BookDAO;
 import dao.TransactionDAO;
 import entity.Book;
 import entity.User;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class CheckoutBookMenu {
 
+    // Lets the user checkout the book
     public static void run(Scanner sc, User user) {
 
         System.out.println("Enter title of the book:");

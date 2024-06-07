@@ -4,7 +4,6 @@ import dao.BookDAO;
 import dao.TransactionDAO;
 import dao.UserDAO;
 import entity.Book;
-import entity.Transaction;
 import entity.User;
 
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import java.util.Scanner;
 
 public class ViewCheckedInBookAdmin {
 
+    // Lets the admin view all the checkedin books and checkout books by title and user.
     public static void run(Scanner sc, User user){
         while(true){
             System.out.println("""
@@ -46,6 +46,7 @@ public class ViewCheckedInBookAdmin {
             }
         }
     }
+    // Checks to see that all the checked in books.
     private static void viewCheckInsBook(Scanner sc, User user) {
         List<Book> books =  BookDAO.viewChecksBook(false);
         for (Book b : books) {
@@ -53,6 +54,8 @@ public class ViewCheckedInBookAdmin {
         }
 
     }
+
+    // Allows the user to checkout a book
     private static void viewCheckInsBookByFilter(Scanner sc, User user) {
         System.out.println("Enter book title you want to check Out:");
         String title = sc.nextLine();

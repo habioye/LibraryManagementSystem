@@ -212,6 +212,7 @@ public class TransactionDAO {
         return overDueBooks;
     }
 
+    // Gets a list of all transactions by BookId
     public static ArrayList<Transaction> getTransactionByBookID(String bookID) {
 
         // Pull transaction data relating to a bookID.

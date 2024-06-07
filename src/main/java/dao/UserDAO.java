@@ -17,13 +17,13 @@ import java.util.List;
 public class UserDAO {
     private static MongoCollection<Document> userCollection;
     private static MongoCollection<Document> bookCollection;
-
+    // Initializes the Collection
     public static void initializeCollections(MongoCollection<Document> userCollec,
                                              MongoCollection<Document> bookCollec) {
         userCollection = userCollec;
         bookCollection = bookCollec;
     }
-
+    // Creates a new user in the database
     public static boolean createNewUser(String username, String password, String first, String last) {
 
         if(userCollection == null || bookCollection == null) {
@@ -59,6 +59,7 @@ public class UserDAO {
 
     }
 
+    // Returns the user object by ID
     public static User getUserByID(String userID) {
 
         if(userCollection == null || bookCollection == null) {
@@ -93,7 +94,7 @@ public class UserDAO {
         // Return user.
         return usersGrabbed.getFirst();
     }
-
+    // Returns user object by username
     public static User getUser(String username) {
 
         if(userCollection == null || bookCollection == null) {
@@ -137,6 +138,7 @@ public class UserDAO {
 
     }
 
+    // Checks if the username and password combination exists in the database
     public static boolean authenticateUser(String username, String password) {
 
         if(userCollection == null || bookCollection == null) {
@@ -182,6 +184,7 @@ public class UserDAO {
 
     }
 
+    // Returns an array of the checked out books based on the username.
     public static ArrayList<Book> grabCheckedOutBooks(String username) {
 
         if(userCollection == null || bookCollection == null) {
@@ -232,6 +235,7 @@ public class UserDAO {
         return userCheckOutBooks;
     }
 
+    // Returns an array of all Users.
     public static ArrayList<User> getAllUsers() {
         if(userCollection == null || bookCollection == null) {
             System.out.println("ERROR: Class was not initialized!");

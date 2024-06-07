@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ViewOverdueMenu {
-
+    // Users can view the books that are overdue.
     public static void run(Scanner sc, User user) {
 
         ArrayList<String> overdueIds = TransactionDAO.getOverdueBooksByUserID(user.getUserID());

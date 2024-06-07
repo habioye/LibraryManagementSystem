@@ -11,6 +11,7 @@ public class Book {
     private Boolean checkedOut;
     private String transactionId;
 
+    // Book Constructor
     public Book(String bookId, String bookTitle, String author, String description, List<String> genre, Boolean checkedOut) {
         this.bookId = bookId;
         this.bookTitle = bookTitle;
@@ -19,6 +20,7 @@ public class Book {
         this.genre = genre;
         this.checkedOut = checkedOut;
     }
+    // getter and setter methods for the global variables
 
     public String getBookId() {
         return bookId;
@@ -48,6 +50,7 @@ public class Book {
         return transactionId;
     }
 
+    // Formats the book with a clean look
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -63,6 +66,7 @@ public class Book {
         sb.append("╚═══════════════════════════════════════════════════╝");
         return sb.toString();
     }
+    // Formatter helper
     private String wrapText(String text, int maxLength) {
         StringBuilder result = new StringBuilder();
         int index = 0;

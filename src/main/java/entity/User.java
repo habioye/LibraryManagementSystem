@@ -9,6 +9,7 @@ public class User {
     private String lastName;
     private String[] checkedOutBooks;
 
+    // Constructor method
     public User(String userID, String role, String username, String password, String firstName, String lastName, String[] checkedOutBooks) {
         this.userID = userID;
         this.role = role;
@@ -19,6 +20,7 @@ public class User {
         this.checkedOutBooks = checkedOutBooks;
     }
 
+    // Getter and setter code
     public String getUserID() {
         return userID;
     }

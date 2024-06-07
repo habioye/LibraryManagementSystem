@@ -4,8 +4,6 @@ import dao.UserDAO;
 
 import java.sql.Timestamp;
 
-import static dao.UserDAO.getUserByID;
-
 public class Transaction {
     private String transactionId; // id for transactin
     private String userId; // id generated for user

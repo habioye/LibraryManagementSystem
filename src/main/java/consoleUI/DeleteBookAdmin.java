@@ -1,15 +1,14 @@
 package consoleUI;
 
 import dao.BookDAO;
-import dao.TransactionDAO;
 import entity.Book;
 
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class DeleteBookAdmin {
+    // Lets the admin remove a book from the system
     public static void run(Scanner sc){
         while(true){
             System.out.println("""
@@ -40,6 +39,7 @@ public class DeleteBookAdmin {
         }
     }
 
+    // Promts for details to delete the book.
     private static void DeleteBook(Scanner sc){
         System.out.println("Enter book title you want to check Out:");
         String title = sc.nextLine();

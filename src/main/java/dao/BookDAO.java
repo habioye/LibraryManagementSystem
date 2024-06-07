@@ -1,22 +1,17 @@
 package dao;
 
-import static com.mongodb.client.model.Filters.eq;
-
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-
 import entity.Book;
-import entity.Transaction;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
 
 public class BookDAO {
@@ -48,7 +43,7 @@ public class BookDAO {
             System.out.println("Initialize Database");
         }
     }
-
+    // checkout book by id
     public static void checkOutBook(String id){
         if (collection != null){
             collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOut", true));
@@ -56,7 +51,7 @@ public class BookDAO {
             System.out.println("Initialize Database");
         }
     }
-
+    // check in book by id
     public static void checkInBook(String id){
         if (collection != null){
             collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOut", false));
@@ -162,6 +157,7 @@ public class BookDAO {
         }
     }
 
+    // Gives a list of books based on the title.
     public static List<Book> viewChecksBookUsingFilter(String titleFilter){
         if (collection != null){
             Document query = new Document("checkedOut", false);

@@ -7,6 +7,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AddBookAdmin {
+    // Lets the admin add a book to the system
     public static void run(Scanner sc){
         while(true){
             System.out.println("""
@@ -36,6 +37,7 @@ public class AddBookAdmin {
         }
     }
 
+    // Gets the book's details
     private static void AddBook(Scanner sc){
         System.out.println("Enter Book's Title");
         String title = sc.nextLine();

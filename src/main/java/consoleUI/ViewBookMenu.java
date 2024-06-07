@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class ViewBookMenu {
 
+    // Gets all the books in the library
     private static void viewAllBooksMenu(Scanner sc, User user) {
 
         ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBooks();
@@ -19,6 +20,7 @@ public class ViewBookMenu {
 
     }
 
+    // Lets you search for a specific book besed on the book title, author, or genre.
     private static void viewBookMenu(Scanner sc, int menuInput) {
 
         int mode = 0;
@@ -46,6 +48,7 @@ public class ViewBookMenu {
 
     }
 
+    //  Presents the main menu for what the user wants when viewing book catalogue
     public static void run(Scanner sc, User user) {
         while (true) {
             System.out.println("1. View all books");
