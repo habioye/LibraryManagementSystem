@@ -49,8 +49,11 @@ public class TransactionDAO {
             }
         }
 
-        if(book == null)
+        if(book == null) {
+            System.out.println("Book already checked out");
             return false;
+        }
+
 
         // TODO need to set book to checked out
         BookDAO.checkOutBook(book.getBookId());

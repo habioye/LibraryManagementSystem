@@ -14,12 +14,18 @@ public class ViewOverdueMenu {
 
         ArrayList<String> overdueIds = TransactionDAO.getOverdueBooksByUserID(user.getUserID());
         ArrayList<Book> overdueBooks = new ArrayList<>();
-        for (String id : overdueIds) {
-            overdueBooks.add(BookDAO.getBookById(id));
-        }
 
-        for (Book b : overdueBooks) {
-            System.out.println(b);
+        if (overdueIds == null || overdueIds.isEmpty()) {
+            System.out.println("No overdue books found");
+        } else {
+
+            for (String id : overdueIds) {
+                overdueBooks.add(BookDAO.getBookById(id));
+            }
+
+            for (Book b : overdueBooks) {
+                System.out.println(b);
+            }
         }
 
         System.out.println("Hit enter to return");
