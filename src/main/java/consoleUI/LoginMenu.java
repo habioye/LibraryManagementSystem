@@ -19,6 +19,7 @@ public class LoginMenu {
         UserDAO.initializeCollections(db.getCollection("UserTest"), db.getCollection("BookTest"));
     }
 
+    // Checks if username is valid for the user.
     private static boolean validateUsername(String username) {
 
         username = username.trim();
@@ -35,6 +36,7 @@ public class LoginMenu {
         return true;
     }
 
+    // checks if the password is a valid password for the user
     private static boolean validatePassword(String password) {
 
         password = password.trim();
@@ -115,6 +117,7 @@ public class LoginMenu {
 
     }
 
+    // Prompts the user with the main menu when the program starts.
     public static void run() {
 
         Scanner sc = new Scanner(System.in);
