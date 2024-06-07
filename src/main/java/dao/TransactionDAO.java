@@ -2,11 +2,8 @@ package dao;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Filters;
-
 import entity.Book;
+import entity.Transaction;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -15,14 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import entity.Transaction;
-import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
-
-import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
-
 public class TransactionDAO {
 
     static private MongoCollection<Document> collection;
@@ -70,6 +61,7 @@ public class TransactionDAO {
         return collection.insertOne(document).wasAcknowledged();
     }
 
+    // gets all transaction
     public static ArrayList<Transaction> getAllTransactions() {
 
         FindIterable<Document> result = collection.find();
@@ -84,8 +76,11 @@ public class TransactionDAO {
             String userId = d.get("userId").toString();
             String bookId = d.get("bookId").toString();
             // TODO test if type cast works
-            Timestamp checkoutDate = (Timestamp) d.get("checkoutDate");
-            Timestamp dueDate = (Timestamp) d.get("dueDate");
+            Date dateResult = (Date) d.get("checkoutDate");
+            Timestamp checkoutDate = new Timestamp(dateResult.getTime());
+
+            dateResult = (Date) d.get("dueDate");
+            Timestamp dueDate = new Timestamp(dateResult.getTime());
             boolean checkedOut = d.getBoolean("checkedOut");
             transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
         }

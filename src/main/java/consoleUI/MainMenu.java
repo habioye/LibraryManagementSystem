@@ -1,14 +1,13 @@
 package consoleUI;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import dao.BookDAO;
 import dao.TransactionDAO;
 import entity.Book;
-import entity.Transaction;
 import entity.User;
+
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class MainMenu {
 
@@ -48,7 +47,9 @@ public class MainMenu {
                         DeleteBookAdmin.run(sc);
                         break;
                     case 6:
-                        TransactionDAO.getAllTransactions();
+                        for (Transaction t: TransactionDAO.getAllTransactions()){
+                            System.out.println(t);
+                        }
                         break;
                     case 7:
                         return;  // Return to login menu
@@ -117,6 +118,7 @@ public class MainMenu {
         }
     }
 
+    // switches between the admin and the user.
     public static void run(Scanner sc, User user) {
 
         if (user.getRole().equals("admin"))

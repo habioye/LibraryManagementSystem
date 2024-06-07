@@ -11,14 +11,13 @@ public class Book {
     private Boolean checkedOut;
     private String transactionId;
 
-    public Book(String bookId, String bookTitle, String author, String description, List<String> genre, Boolean checkedOut, String transactionId) {
+    public Book(String bookId, String bookTitle, String author, String description, List<String> genre, Boolean checkedOut) {
         this.bookId = bookId;
         this.bookTitle = bookTitle;
         this.description = description;
         this.author = author;
         this.genre = genre;
         this.checkedOut = checkedOut;
-        this.transactionId = transactionId;
     }
 
     public String getBookId() {

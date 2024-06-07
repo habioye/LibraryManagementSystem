@@ -14,11 +14,12 @@ public class LoginMenu {
     // Establish connection with database and collections
     static {
         DBConnection db = new DBConnection();
-        BookDAO.BookDAOInit(db.getCollection("BookTest"));
-        TransactionDAO.initCollection(db.getCollection("TransactionTest"));
-        UserDAO.initializeCollections(db.getCollection("UserTest"), db.getCollection("BookTest"));
+        BookDAO.BookDAOInit(db.getCollection("Book"));
+        TransactionDAO.initCollection(db.getCollection("Transaction"));
+        UserDAO.initializeCollections(db.getCollection("User"), db.getCollection("Book"));
     }
 
+    // Checks if username is valid for the user.
     private static boolean validateUsername(String username) {
 
         username = username.trim();
@@ -35,6 +36,7 @@ public class LoginMenu {
         return true;
     }
 
+    // checks if the password is a valid password for the user
     private static boolean validatePassword(String password) {
 
         password = password.trim();
@@ -115,6 +117,7 @@ public class LoginMenu {
 
     }
 
+    // Prompts the user with the main menu when the program starts.
     public static void run() {
 
         Scanner sc = new Scanner(System.in);
