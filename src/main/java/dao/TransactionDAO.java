@@ -42,7 +42,11 @@ public class TransactionDAO {
             }
         }
 
+        if(book == null)
+            return false;
+
         // TODO need to set book to checked out
+        BookDAO.checkOutBook(book.getBookId());
         // Insert transaction
         Timestamp checkoutDate = new Timestamp(System.currentTimeMillis());
         Timestamp dueDate = new Timestamp(checkoutDate.getTime() + dayToMilliseconds(14));
@@ -54,9 +58,7 @@ public class TransactionDAO {
                 .append("dueDate", dueDate)
                 .append("checkedOut", true);
 
-        if (collection.insertOne(document).wasAcknowledged())
-            return true;
-        return false;
+        return collection.insertOne(document).wasAcknowledged();
     }
 
     public static ArrayList<Transaction> getAllTransactions() {
