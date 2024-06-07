@@ -15,7 +15,7 @@ public class LoginMenu {
     static {
         DBConnection db = new DBConnection();
         BookDAO.BookDAOInit(db.getCollection("BookTest"));
-        TransactionDAO.initCollection(db.getCollection("transactions"));
+        TransactionDAO.initCollection(db.getCollection("TransactionTest"));
         UserDAO.initializeCollections(db.getCollection("UserTest"), db.getCollection("BookTest"));
     }
 

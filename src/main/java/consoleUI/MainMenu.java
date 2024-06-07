@@ -74,7 +74,7 @@ public class MainMenu {
                         ViewCheckoutMenu.run(sc, user);
                         break;
                     case 3:
-                        CheckoutBookMenu.run(sc, user);
+                        //CheckoutBookMenu.run(sc, user);
                         break;
                     case 4:
                         System.out.println("To be implemented");
