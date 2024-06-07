@@ -1,8 +1,13 @@
 package consoleUI;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import dao.BookDAO;
+import dao.TransactionDAO;
+import entity.Book;
+import entity.Transaction;
 import entity.User;
 
 public class MainMenu {
@@ -31,7 +36,7 @@ public class MainMenu {
                         ViewBookMenu.run(sc, user);
                         break;
                     case 2:
-                        ViewCheckedOutBookAdmin.run(sc,user);
+                        ViewCheckedOutBookAdmin.run(sc, user);
                         break;
                     case 3:
                         ViewCheckedInBookAdmin.run(sc,user);
@@ -69,9 +74,10 @@ public class MainMenu {
         while (true) {
             System.out.println("1. View books");
             System.out.println("2. View your checkouts");
-            System.out.println("3. Check out a book");
-            System.out.println("4. Check in a book");
-            System.out.println("5. Logout");
+            System.out.println("3. View your overdue books");
+            System.out.println("4. Check out a book");
+            System.out.println("5. Check in a book");
+            System.out.println("6. Logout");
 
             try {
                 int input = sc.nextInt();
@@ -85,12 +91,26 @@ public class MainMenu {
                         ViewCheckoutMenu.run(sc, user);
                         break;
                     case 3:
-                        CheckoutBookMenu.run(sc, user);
+                        ArrayList<String> overdueIds = TransactionDAO.getOverdueBooksByUserID(user.getUserID());
+                        ArrayList<Book> overdueBooks = new ArrayList<>();
+                        for (String id : overdueIds) {
+                            overdueBooks.add(BookDAO.getBookById(id));
+                        }
+
+                        for (Book b : overdueBooks) {
+                            System.out.println(b);
+                        }
+
+                        System.out.println("Hit enter to return");
+                        sc.nextLine();
                         break;
                     case 4:
-                        System.out.println("To be implemented");
+                        CheckoutBookMenu.run(sc, user);
                         break;
                     case 5:
+                        System.out.println("To be implemented");
+                        break;
+                    case 6:
                         return; // Return to login menu
                     default:
                         System.out.println("Invalid input");

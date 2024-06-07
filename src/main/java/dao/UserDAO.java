@@ -59,6 +59,41 @@ public class UserDAO {
 
     }
 
+    public static User getUserByID(String userID) {
+
+        if(userCollection == null || bookCollection == null) {
+            System.out.println("ERROR: Class was not initialized!");
+            return null;
+        }
+
+        // Acquire all users with provided id.
+        Document filter = new Document("_id", userID);
+        FindIterable<Document> result = userCollection.find(filter);
+
+        // Create user objects with that id.
+        ArrayList<User> usersGrabbed = new ArrayList<>();
+        for(Document doc: result) {
+            List<ObjectId> checkedOutBooks = doc.getList("checkedOutBooks", ObjectId.class);
+            ArrayList<String> checkOutBooks = new ArrayList<>();
+            checkedOutBooks.forEach(book -> checkOutBooks.add(book.toString()));
+            User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
+                    doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                    checkOutBooks.toArray(new String[0]));
+            usersGrabbed.add(user);
+        }
+
+        // If no user with that id, return null
+        if(usersGrabbed.isEmpty())
+            return null;
+
+        // If multiple users with that id, throw an exception.
+        if(usersGrabbed.size() > 1)
+            throw new RuntimeException("SERVER ERROR: multiple users with the same username!");
+
+        // Return user.
+        return usersGrabbed.getFirst();
+    }
+
     public static User getUser(String username) {
 
         if(userCollection == null || bookCollection == null) {
