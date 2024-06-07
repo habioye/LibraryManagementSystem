@@ -23,9 +23,9 @@ public class MainMenu {
             System.out.println("2. View and Check in Book(s)");
             System.out.println("3. View and Check out Book(s)");
             System.out.println("4. Add Book(s)");
-            System.out.println("6. Delete Book(s)");
-            System.out.println("7. Transaction History");
-            System.out.println("8. Logout");
+            System.out.println("5. Delete Book(s)");
+            System.out.println("6. Transaction History");
+            System.out.println("7. Logout");
 
             try {
                 int input = sc.nextInt();
@@ -42,14 +42,15 @@ public class MainMenu {
                         ViewCheckedInBookAdmin.run(sc,user);
                         break;
                     case 4:
-                        return;  // Return to login menu
+                        AddBookAdmin.run(sc);
+                        break;
                     case 5:
-                        return;  // Return to login menu
+                        DeleteBookAdmin.run(sc);
+                        break;
                     case 6:
-                        return;  // Return to login menu
+                        TransactionDAO.getAllTransactions();
+                        break;
                     case 7:
-                        return;  // Return to login menu
-                    case 8:
                         return;  // Return to login menu
                     default:
                         System.out.println("Invalid input");
