@@ -210,7 +210,32 @@ public class TransactionDAO {
         return overDueBooks;
     }
 
-    
+    public static ArrayList<Transaction> getTransactionByBookID(String bookID) {
+
+        // Pull transaction data relating to a bookID.
+        Document filter = new Document("bookId", new ObjectId(bookID));
+        FindIterable<Document> result = collection.find(filter);
+
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        for (Document d : result) {
+            String transactionId = d.get("_id").toString();
+            String bookId = d.get("bookId").toString();
+            String userID = d.get("userId").toString();
+
+            // Convert date to timestamp
+            Date dateResult = (Date) d.get("checkoutDate");
+            Timestamp checkoutDate = new Timestamp(dateResult.getTime());
+
+            dateResult = (Date) d.get("dueDate");
+            Timestamp dueDate = new Timestamp(dateResult.getTime());
+
+            boolean checkedOut = d.getBoolean("checkedOut");
+            transactions.add(new Transaction(transactionId, userID, bookId, checkoutDate, dueDate, checkedOut));
+        }
+
+        return transactions;
+
+    }
 
     private static Long dayToMilliseconds(int days) {
         return Long.valueOf(days * 24 * 60 * 60 * 1000);
