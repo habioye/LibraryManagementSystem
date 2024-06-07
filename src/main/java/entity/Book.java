@@ -8,16 +8,16 @@ public class Book {
     private String description;
     private String author;
     private List<String> genre;
-    private String checkedOutBy;
+    private Boolean checkedOut;
     private String transactionId;
 
-    public Book(String bookId, String bookTitle, String author, String description, List<String> genre, String checkedOutBy, String transactionId) {
+    public Book(String bookId, String bookTitle, String author, String description, List<String> genre, Boolean checkedOut, String transactionId) {
         this.bookId = bookId;
         this.bookTitle = bookTitle;
         this.description = description;
         this.author = author;
         this.genre = genre;
-        this.checkedOutBy = checkedOutBy;
+        this.checkedOut = checkedOut;
         this.transactionId = transactionId;
     }
 
@@ -41,8 +41,8 @@ public class Book {
         return genre;
     }
 
-    public String isCheckout() {
-        return checkedOutBy;
+    public Boolean isCheckout() {
+        return checkedOut;
     }
 
     public String getTransactionId() {
@@ -60,7 +60,7 @@ public class Book {
         sb.append("║ Description:                                      ║\n");
         sb.append(wrapText(description, 50));
         sb.append(String.format("║ %-49s ║\n", "Genre: " + genre));
-        sb.append(String.format("║ %-49s ║\n", "CheckOut By: " + checkedOutBy));
+        sb.append(String.format("║ %-49s ║\n", "CheckOut: " + checkedOut));
         sb.append("╚═══════════════════════════════════════════════════╝");
         return sb.toString();
     }

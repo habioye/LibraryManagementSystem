@@ -157,7 +157,7 @@ public class UserDAO {
             for(Document doc: books) {
                 List<String> genres = doc.getList("genres", String.class);
                 Book newBook = new Book(doc.get("_id").toString(), doc.get("title").toString(),
-                        doc.get("description").toString(), doc.get("author").toString(), genres, currentUser.getUsername(),
+                        doc.get("description").toString(), doc.get("author").toString(), genres, doc.getBoolean("checkedOut"),
                         doc.get("currentTransactionId").toString());
                 booksWithSameID.add(newBook);
             }

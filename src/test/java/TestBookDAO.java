@@ -130,7 +130,7 @@ public class TestBookDAO {
         assertEquals(0, books.size());
 
         List<Book> allBooks = BookDAO.getBooks();
-        BookDAO.checkOutBook(allBooks.get(0).getBookId(),UserDAO.getUser("user1"));
+        BookDAO.checkOutBook(allBooks.get(0).getBookId());
 
         books = BookDAO.viewAllCheckedOutBook();
         assertEquals(1, books.size());

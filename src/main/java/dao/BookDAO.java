@@ -28,7 +28,7 @@ public class BookDAO {
                     .append("author", author)
                     .append("description", description)
                     .append("genres", genres)
-                    .append("checkedOutBy", "")
+                    .append("checkedOut", false)
                     .append("currentTransactionId", "");
             collection.insertOne(book);
         } else {
@@ -44,9 +44,9 @@ public class BookDAO {
         }
     }
 
-    public static void checkOutBook(String id, User user){
+    public static void checkOutBook(String id){
         if (collection != null){
-            collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOutBy", user.getUsername()));
+            collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOut", true));
         }else {
             System.out.println("Initialize Database");
         }
@@ -54,7 +54,7 @@ public class BookDAO {
 
     public static void checkInBook(String id){
         if (collection != null){
-            collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOutBy", ""));
+            collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOut", false));
         }else {
             System.out.println("Initialize Database");
         }
@@ -94,9 +94,9 @@ public class BookDAO {
                     String author = doc.getString("author");
                     String description = doc.getString("description");
                     List<String> genres = doc.getList("genres", String.class);
-                    String checkedOutBy = doc.getString("checkedOutBy");
+                    Boolean checkedOut = doc.getBoolean("checkedOut");
                     String currentTransactionId = doc.getString("currentTransactionId");
-                    books.add(new Book(id.toHexString(), title, author, description, genres,checkedOutBy,currentTransactionId));
+                    books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
                 }
             }
             return books;
@@ -121,9 +121,9 @@ public class BookDAO {
                         String author = doc.getString("author");
                         String description = doc.getString("description");
                         List<String> genres = doc.getList("genres", String.class);
-                        String checkedOutBy = doc.getString("checkedOutBy");
+                        Boolean checkedOut = doc.getBoolean("checkedOut");
                         String currentTransactionId = doc.getString("currentTransactionId");
-                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOutBy,currentTransactionId));
+                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
                     }
                 }
             }
@@ -138,9 +138,9 @@ public class BookDAO {
     public static List<Book> viewAllCheckedOutBook(){
         if (collection != null){
             List<Book> books = new ArrayList<>();
-            var filter = ne("checkedOutBy", "");
+            Document query = new Document("checkedOut", true);
             // Integrate through the database and get all books that are checked out
-            try (MongoCursor<Document> cursor = collection.find(filter).iterator()){
+            try (MongoCursor<Document> cursor = collection.find(query).iterator()){
                 while (cursor.hasNext()){
                     Document doc = cursor.next();
                     if (doc.size() == 7){
@@ -149,9 +149,9 @@ public class BookDAO {
                         String author = doc.getString("author");
                         String description = doc.getString("description");
                         List<String> genres = doc.getList("genres", String.class);
-                        String checkedOutBy = doc.getString("checkedOutBy");
+                        Boolean checkedOut = doc.getBoolean("checkedOut");
                         String currentTransactionId = doc.getString("currentTransactionId");
-                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOutBy,currentTransactionId));
+                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
                     }
                 }
             }
@@ -164,7 +164,7 @@ public class BookDAO {
     public static List<Book> viewCheckOutsBookByTitle(String titleFilter){
         if (collection != null){
             List<Book> books = new ArrayList<>();
-            var filter = and(ne("checkedOutBy", ""), eq("title", titleFilter));
+            var filter = and(eq("checkedOut", true), eq("title", titleFilter));
             //  var filter = and(ne("checkedOutBy", ""), regex("title", "^" + titleFilter + "$", "i"));
             // Integrate through the database and get all books that are checked out
             try (MongoCursor<Document> cursor = collection.find(filter).iterator()){
@@ -176,9 +176,9 @@ public class BookDAO {
                         String author = doc.getString("author");
                         String description = doc.getString("description");
                         List<String> genres = doc.getList("genres", String.class);
-                        String checkedOutBy = doc.getString("checkedOutBy");
+                        Boolean checkedOut = doc.getBoolean("checkedOut");
                         String currentTransactionId = doc.getString("currentTransactionId");
-                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOutBy,currentTransactionId));
+                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
                     }
                 }
             }
@@ -203,9 +203,9 @@ public class BookDAO {
                         String author = doc.getString("author");
                         String description = doc.getString("description");
                         List<String> genres = doc.getList("genres", String.class);
-                        String checkedOutBy = doc.getString("checkedOutBy");
+                        Boolean checkedOut = doc.getBoolean("checkedOut");
                         String currentTransactionId = doc.getString("currentTransactionId");
-                        books.add(new Book(id, title, author, description, genres,checkedOutBy,currentTransactionId));
+                        books.add(new Book(id, title, author, description, genres,checkedOut,currentTransactionId));
                     }
                 }
             }
