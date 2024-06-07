@@ -23,7 +23,6 @@ public class TransactionDAO {
     public static boolean addTransaction(String userId, String bookTitle) {
 
         ArrayList<Book> books = (ArrayList<Book>) BookDAO.getBookUsingFilter(1, bookTitle);
-
         if (books == null || books.size() == 0) {
             System.out.println("Book not found");
             return false;
@@ -37,7 +36,7 @@ public class TransactionDAO {
                 break;
             }
         }
-        
+
         // TODO need to set book to checked out
         // Insert transaction
         Timestamp checkoutDate = new Timestamp(System.currentTimeMillis());
@@ -79,9 +78,9 @@ public class TransactionDAO {
     }
 
     // Get all transactions for given user
-    public static ArrayList<Transaction> getTransactionsByUsername(String username) {
+    public static ArrayList<Transaction> getTransactionsByUserId(String userId) {
 
-        Document filter = new Document("username", username);
+        Document filter = new Document("userId", new ObjectId(userId));
         FindIterable<Document> result = collection.find(filter);
 
         ArrayList<Transaction> transactions = new ArrayList<>();
@@ -91,10 +90,9 @@ public class TransactionDAO {
 
         for (Document d : result) {
             String transactionId = d.get("_id").toString();
-            String userId = d.get("userId").toString();
             String bookId = d.get("bookId").toString();
             // TODO test if type cast works
-            Timestamp checkoutDate = (Timestamp) d.get("checkoutDate");
+            Timestamp checkoutDate = Timestamp.valueOf(d.get("checkoutDate").toString());
             Timestamp dueDate = (Timestamp) d.get("dueDate");
             boolean checkedOut = d.getBoolean("checkedOut");
             transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
