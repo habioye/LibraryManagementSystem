@@ -132,7 +132,7 @@ public class BookDAO {
             Document result = collection.find(filter).first();
 
             if (result == null) {
-                System.out.println("No results found");
+                System.out.println("Book not found");
                 return null;
             }
 
