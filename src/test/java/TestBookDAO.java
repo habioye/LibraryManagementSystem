@@ -126,6 +126,7 @@ public class TestBookDAO {
         BookDAO.addBook("Title1", "Author1", "Description1", genres);
         BookDAO.addBook("Title2", "Author2", "Description2", genres);
 
+
         List<Book> books = BookDAO.viewAllCheckedOutBook();
         assertEquals(0, books.size());
 

@@ -2,7 +2,10 @@ package dao;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
+
 import entity.Book;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -15,6 +18,10 @@ import java.util.List;
 import entity.Transaction;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
 
 public class TransactionDAO {
 
@@ -83,6 +90,68 @@ public class TransactionDAO {
 
         return transactions;
     }
+    public static ArrayList<Transaction> getCheckOutTransactions() {
+        Document query = new Document("checkedOut", true);
+        FindIterable<Document> result = collection.find(query);
+        ArrayList<Transaction> transactions = new ArrayList<>();
+
+        // Check if operation was successful
+        if (!result.iterator().hasNext())
+            return transactions;
+
+        for (Document d : result) {
+            String transactionId = d.get("_id").toString();
+            String userId = d.get("userId").toString();
+            String bookId = d.get("bookId").toString();
+            // TODO test if type cast works
+            Date dateResult = (Date) d.get("checkoutDate");
+            Timestamp checkoutDate = new Timestamp(dateResult.getTime());
+
+            dateResult = (Date) d.get("dueDate");
+            Timestamp dueDate = new Timestamp(dateResult.getTime());
+            boolean checkedOut = d.getBoolean("checkedOut");
+            transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
+        }
+
+        return transactions;
+    }
+
+    public static List<Transaction> viewCheckOutsTransActionUsingTitle(String titleFilter){
+        Document query = new Document("checkedOut", true);
+        FindIterable<Document> result = collection.find(query);
+        ArrayList<Transaction> transactions = new ArrayList<>();
+
+        // Check if operation was successful
+        if (!result.iterator().hasNext())
+            return transactions;
+
+        for (Document d : result) {
+            String bookId = d.get("bookId").toString();
+            if(BookDAO.getBookById(bookId).getBookTitle().equals(titleFilter)){
+                String transactionId = d.get("_id").toString();
+                String userId = d.get("userId").toString();
+                // TODO test if type cast works
+                Date dateResult = (Date) d.get("checkoutDate");
+                Timestamp checkoutDate = new Timestamp(dateResult.getTime());
+
+                dateResult = (Date) d.get("dueDate");
+                Timestamp dueDate = new Timestamp(dateResult.getTime());
+                boolean checkedOut = d.getBoolean("checkedOut");
+                transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
+            }
+        }
+
+        return transactions;
+    }
+
+    public static void checkInTransaction(String id){
+        if (collection != null){
+            collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOut", false));
+        }else {
+            System.out.println("Initialize Database");
+        }
+    }
+
 
     // Get all transactions for given user
     public static ArrayList<Transaction> getTransactionsByUserId(String userId) {
