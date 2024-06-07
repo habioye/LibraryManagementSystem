@@ -7,14 +7,16 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 
 import entity.Book;
-import entity.User;
+import entity.Transaction;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
-import static com.mongodb.client.model.Filters.*;
+
 import static com.mongodb.client.model.Updates.set;
 
 public class BookDAO {
@@ -55,7 +57,6 @@ public class BookDAO {
             System.out.println("Initialize Database");
         }
     }
-
 
     public static void checkInBook(String id){
         if (collection != null){
@@ -133,15 +134,16 @@ public class BookDAO {
             }
             return books;
         } else {
+            System.out.println("Initialize Database");
             return null;
         }
     }
 
-    // View all current checkedOut books
-    public static List<Book> viewAllCheckedOutBook(){
+    // View all current checkedOut books if true, else view all current Available books
+    public static List<Book> viewChecksBook(boolean bool){
         if (collection != null){
             List<Book> books = new ArrayList<>();
-            Document query = new Document("checkedOut", true);
+            Document query = new Document("checkedOut", bool);
             // Integrate through the database and get all books that are checked out
             try (MongoCursor<Document> cursor = collection.find(query).iterator()){
                 while (cursor.hasNext()){
@@ -161,21 +163,23 @@ public class BookDAO {
             return books;
         }
         else {
+            System.out.println("Initialize Database");
             return null;
         }
     }
-    public static List<Book> viewCheckOutsBookByTitle(String titleFilter){
+
+    public static List<Book> viewChecksBookUsingFilter(String titleFilter){
         if (collection != null){
-            List<Book> books = new ArrayList<>();
-            var filter = and(eq("checkedOut", true), eq("title", titleFilter));
-            //  var filter = and(ne("checkedOutBy", ""), regex("title", "^" + titleFilter + "$", "i"));
+            Document query = new Document("checkedOut", false);
+            FindIterable<Document> result = collection.find(query);
+            ArrayList<Book> books = new ArrayList<>();
             // Integrate through the database and get all books that are checked out
-            try (MongoCursor<Document> cursor = collection.find(filter).iterator()){
+            try (MongoCursor<Document> cursor = collection.find(query).iterator()){
                 while (cursor.hasNext()){
                     Document doc = cursor.next();
-                    if (doc.size() == 7){
+                    String title = doc.getString("title");
+                    if (title.equals(titleFilter)){
                         ObjectId id = doc.getObjectId("_id");
-                        String title = doc.getString("title");
                         String author = doc.getString("author");
                         String description = doc.getString("description");
                         List<String> genres = doc.getList("genres", String.class);
@@ -183,11 +187,13 @@ public class BookDAO {
                         String currentTransactionId = doc.getString("currentTransactionId");
                         books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
                     }
+
                 }
             }
             return books;
         }
         else {
+            System.out.println("Initialize Database");
             return null;
         }
     }
@@ -196,26 +202,23 @@ public class BookDAO {
     public static Book getBookById(String id){
         if (collection != null){
             Document query = new Document("_id", new ObjectId(id));
-            // Integrate through the database and get all blogs
-            try (MongoCursor<Document> cursor = collection.find(query).iterator()){
-                while (cursor.hasNext()){
-                    Document doc = cursor.next();
-                    if (doc.size() == 7){
-                        String title = doc.getString("title");
-                        String author = doc.getString("author");
-                        String description = doc.getString("description");
-                        List<String> genres = doc.getList("genres", String.class);
-                        Boolean checkedOut = doc.getBoolean("checkedOut");
-                        String currentTransactionId = doc.getString("currentTransactionId");
-                        return new Book(id, title, author, description, genres,checkedOut,currentTransactionId);
-                    }
-                }
+            Document doc = collection.find(query).first();
+            if (doc == null) {
+                System.out.println("No Book of that Id");
+                return null;
             }
+            String title = doc.getString("title");
+            String author = doc.getString("author");
+            String description = doc.getString("description");
+            List<String> genres = doc.getList("genres", String.class);
+            Boolean checkedOut = doc.getBoolean("checkedOut");
+            String currentTransactionId = doc.getString("currentTransactionId");
+            return new Book(id, title, author, description, genres,checkedOut,currentTransactionId);
         }
         else {
+            System.out.println("Initialize Database");
             return null;
         }
-        return null;
     }
 
 }

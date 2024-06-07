@@ -17,7 +17,7 @@ public class CheckoutBookMenu {
         System.out.println("Enter title of the book:");
         try {
             String input = sc.nextLine().trim();
-            Book book = BookDAO.getBookUsingFilter(1, "input").getFirst();
+            Book book = BookDAO.getBookUsingFilter(1, input).getFirst();
 
             if (book == null)
                 return;  // Return to main menu

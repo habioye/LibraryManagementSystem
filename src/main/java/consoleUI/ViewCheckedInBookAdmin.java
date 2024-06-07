@@ -2,23 +2,21 @@ package consoleUI;
 
 import dao.BookDAO;
 import dao.TransactionDAO;
-import dao.UserDAO;
 import entity.Book;
 import entity.Transaction;
 import entity.User;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class ViewCheckedOutBookAdmin {
+public class ViewCheckedInBookAdmin {
 
     public static void run(Scanner sc, User user){
         while(true){
             System.out.println("""
-                    1. View all checkouts books
-                    2. Check in books by title
+                    1. View all checkins books
+                    2. Check out books by title and user
                     3. Exit
                     """);
             try {
@@ -27,10 +25,10 @@ public class ViewCheckedOutBookAdmin {
 
                 switch (input) {
                     case 1:
-                        viewAllCheckOutsBooksMenu(sc, user);
+                        viewCheckInsBook(sc, user);
                         break;
                     case 2:
-                        viewCheckOutsBookByFilter(sc,user);
+                        viewCheckInsBookByFilter(sc,user);
                         break;
                     case 3:
                         return; // Return to main menu
@@ -46,22 +44,22 @@ public class ViewCheckedOutBookAdmin {
             }
         }
     }
-    private static void viewAllCheckOutsBooksMenu(Scanner sc, User user) {
-        List<Transaction> transactions =  TransactionDAO.getCheckOutTransactions();
-        for (Transaction b : transactions) {
-            System.out.println(BookDAO.getBookById(b.getBookId()));
+    private static void viewCheckInsBook(Scanner sc, User user) {
+        List<Book> books =  BookDAO.viewChecksBook(false);
+        for (Book b : books) {
+            System.out.println(b);
         }
 
     }
-    private static void viewCheckOutsBookByFilter(Scanner sc, User user) {
-        System.out.println("Enter book title you want to check in:");
+    private static void viewCheckInsBookByFilter(Scanner sc, User user) {
+        System.out.println("Enter book title you want to check Out:");
         String title = sc.nextLine();
-        List<Transaction> transactions =  TransactionDAO.viewCheckOutsTransActionUsingTitle(title);
-        if (!transactions.isEmpty()){
-            for (Transaction transaction : transactions) {
-                //System.out.println(UserDAO.getUserById(transaction.getUserId()));
-                System.out.println(BookDAO.getBookById(transaction.getBookId()));
+        List<Book> books =  BookDAO.viewChecksBookUsingFilter(title);
+        if (!books.isEmpty()){
+            for (Book book : books) {
+                System.out.println(book);
             }
+
             System.out.println("Enter a book number to check in book or (q) to quit:");
             while (true){
                 try {
@@ -70,8 +68,8 @@ public class ViewCheckedOutBookAdmin {
                         break;
                     }
                     int input = Integer.parseInt(in);
-                    BookDAO.checkInBook(transactions.get(input-1).getBookId());
-                    TransactionDAO.checkInTransaction(transactions.get(input-1).getTransactionId());
+                    BookDAO.checkInBook(books.get(input-1).getBookId());
+                    TransactionDAO.checkInTransaction(books.get(input-1).getTransactionId());
                     System.out.println("Book checked in");
                     break;
                 } catch (Exception e){
