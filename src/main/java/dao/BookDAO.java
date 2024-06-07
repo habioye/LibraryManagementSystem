@@ -1,7 +1,11 @@
 package dao;
 
+import static com.mongodb.client.model.Filters.eq;
+
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+
 import entity.Book;
 import entity.User;
 import org.bson.Document;
@@ -10,7 +14,6 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.set;
 
@@ -35,6 +38,7 @@ public class BookDAO {
             System.out.println("Initialize Database");
         }
     }
+
     // Delete book from database
     public static void deleteBook(String id){
         if (collection != null){
@@ -52,6 +56,7 @@ public class BookDAO {
         }
     }
 
+
     public static void checkInBook(String id){
         if (collection != null){
             collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOut", false));
@@ -63,14 +68,14 @@ public class BookDAO {
     public static List<Book> getBookUsingFilter(int mode, String name){
         if (collection != null){
             List<Book> books = new ArrayList<>();
-            String queryType = switch(mode){
+            String queryType = switch (mode) {
                 case 1 -> "title";
                 case 2 -> "author";
                 case 3 -> "genres";
                 default -> "no";
             };
             Document query;
-            if (queryType.equals("genres")){
+            if (queryType.equals("genres")) {
                 List<Pattern> regexPatterns = new ArrayList<>();
                 for (String genre : name.split(" ")) {
                     // Create a case-insensitive regex pattern for each genre
@@ -100,8 +105,7 @@ public class BookDAO {
                 }
             }
             return books;
-        }
-        else {
+        } else {
             System.out.println("Initialize Database");
             return null;
         }
@@ -112,8 +116,8 @@ public class BookDAO {
         if (collection != null){
             List<Book> books = new ArrayList<>();
             // Integrate through the database and get all blogs
-            try (MongoCursor<Document> cursor = collection.find().iterator()){
-                while (cursor.hasNext()){
+            try (MongoCursor<Document> cursor = collection.find().iterator()) {
+                while (cursor.hasNext()) {
                     Document doc = cursor.next();
                     if (doc.size() == 7){
                         ObjectId id = doc.getObjectId("_id");
@@ -128,8 +132,7 @@ public class BookDAO {
                 }
             }
             return books;
-        }
-        else {
+        } else {
             return null;
         }
     }
