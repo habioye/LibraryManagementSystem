@@ -27,6 +27,7 @@ public class TransactionDAO {
 
     static private MongoCollection<Document> collection;
 
+    // Connect to the transaction collection
     public static void initCollection(MongoCollection<Document> collect) {
         collection = collect;
     }
@@ -49,13 +50,11 @@ public class TransactionDAO {
             }
         }
 
-        if(book == null) {
+        if (book == null) {
             System.out.println("Book already checked out");
             return false;
         }
 
-
-        // TODO need to set book to checked out
         BookDAO.checkOutBook(book.getBookId());
         // Insert transaction
         Timestamp checkoutDate = new Timestamp(System.currentTimeMillis());
@@ -93,6 +92,8 @@ public class TransactionDAO {
 
         return transactions;
     }
+
+    // Return transactions that are currently checked out
     public static ArrayList<Transaction> getCheckOutTransactions() {
         Document query = new Document("checkedOut", true);
         FindIterable<Document> result = collection.find(query);
@@ -119,7 +120,8 @@ public class TransactionDAO {
         return transactions;
     }
 
-    public static List<Transaction> viewCheckOutsTransActionUsingTitle(String titleFilter){
+    // Get transactions by book title that are checked out
+    public static List<Transaction> viewCheckOutsTransActionUsingTitle(String titleFilter) {
         Document query = new Document("checkedOut", true);
         FindIterable<Document> result = collection.find(query);
         ArrayList<Transaction> transactions = new ArrayList<>();
@@ -130,7 +132,7 @@ public class TransactionDAO {
 
         for (Document d : result) {
             String bookId = d.get("bookId").toString();
-            if(BookDAO.getBookById(bookId).getBookTitle().equals(titleFilter)){
+            if (BookDAO.getBookById(bookId).getBookTitle().equals(titleFilter)) {
                 String transactionId = d.get("_id").toString();
                 String userId = d.get("userId").toString();
                 // TODO test if type cast works
@@ -147,10 +149,11 @@ public class TransactionDAO {
         return transactions;
     }
 
-    public static void checkInTransaction(String id){
-        if (collection != null){
+    // Update a transaction when it's checked in
+    public static void checkInTransaction(String id) {
+        if (collection != null) {
             collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOut", false));
-        }else {
+        } else {
             System.out.println("Initialize Database");
         }
     }
@@ -189,6 +192,7 @@ public class TransactionDAO {
         return transactions;
     }
 
+    // Gets overdue books for given user
     public static ArrayList<String> getOverdueBooksByUserID(String userId) {
 
         // Pull transaction data relating to a user.
@@ -202,12 +206,12 @@ public class TransactionDAO {
             Date time = new Date();
             Date currentTime = new Date(time.getTime());
             Date dueDate = doc.getDate("dueDate");
-            if(dueDate.before(currentTime)) {
+            if (dueDate.before(currentTime)) {
                 overDueBooks.add(doc.get("bookId").toString());
             }
         });
 
-        if(overDueBooks.isEmpty())
+        if (overDueBooks.isEmpty())
             return new ArrayList<>();
 
         return overDueBooks;
