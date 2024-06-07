@@ -1,5 +1,7 @@
 package entity;
 
+import dao.UserDAO;
+
 import java.sql.Timestamp;
 
 public class Transaction {
@@ -69,15 +71,26 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" +
-                "transactionId='" + transactionId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", userName='" + getUserById(userId) + '\'' +
-                ", bookId='" + bookId + '\'' +
-                ", checkoutDate=" + checkoutDate +
-                ", dueDate=" + dueDate +
-                ", checkedOut=" + checkedOut +
-                '}';
+        User user = UserDAO.getUserByID(userId);
+        String thickLine = "=========================================";
+        String headerLine = "| %-15s | %-20s |";
+
+        return String.format(
+                "LibraryRecord:\n" +
+                        thickLine + "\n" +
+                        headerLine + "\n" +
+                        thickLine + "\n" +
+                        "| userID        : %-20s |\n" +
+                        "| UserName        : %-20s |\n" +
+                        "| FirstName        : %-20s |\n" +
+                        "| LastName        : %-20s |\n" +
+                        "| checkoutDate  : %-20s |\n" +
+                        "| dueDate       : %-20s |\n" +
+                        "| checkout      : %-20b |\n" +
+                        thickLine,
+                "Field", "Value",
+                userId, user.getUsername(),user.getFirstName(), user.getLastName(),checkoutDate, dueDate, checkedOut);
     }
+
 }
 
