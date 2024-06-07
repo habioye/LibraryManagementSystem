@@ -1,75 +1,82 @@
-/*public class Transaction {
-    private final String transactionID;
-    private String userID;
-    private String checkoutDate;
-    private String dueData;
-    private boolean checkout;
-    public void Transaction(String transactionID, String userID, String checkoutDate, String dueData, boolean checkout) {
-        this.transactionID = transactionID;
-        this.userID = userID;
+package entity;
+
+import java.sql.Timestamp;
+
+public class Transaction {
+    private String transactionId;
+    private String userId;
+    private String bookId;
+    private Timestamp checkoutDate;
+    private Timestamp dueDate;
+    private boolean checkedOut;
+
+    public Transaction(String transactionId, String userId, String bookId, Timestamp checkoutDate, Timestamp dueDate, boolean checkedOut) {
+        this.transactionId = transactionId;
+        this.userId = userId;
+        this.bookId = bookId;
         this.checkoutDate = checkoutDate;
-        this.dueData = dueData;
-        this.checkout = checkout;
-
+        this.dueDate = dueDate;
+        this.checkedOut = checkedOut;
     }
 
-    public boolean isCheckout() {
-        return checkout;
+    public String getTransactionId() {
+        return transactionId;
     }
 
-    public void setCheckout(boolean checkout) {
-        this.checkout = checkout;
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 
-    public String getDueData() {
-        return dueData;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setDueData(String dueData) {
-        this.dueData = dueData;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getCheckoutDate() {
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+    public Timestamp getCheckoutDate() {
         return checkoutDate;
     }
 
-    public void setCheckoutDate(String checkoutDate) {
+    public void setCheckoutDate(Timestamp checkoutDate) {
         this.checkoutDate = checkoutDate;
     }
 
-    public String getUserID() {
-        return userID;
+    public Timestamp getDueDate() {
+        return dueDate;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setDueDate(Timestamp dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public String getTransactionID() {
-        return transactionID;
+    public boolean isCheckedOut() {
+        return checkedOut;
     }
 
-    // toString method
+    public void setCheckedOut(boolean checkedOut) {
+        this.checkedOut = checkedOut;
+    }
+
     @Override
     public String toString() {
-        String thickLine = "=========================================";
-        String headerLine = "| %-15s | %-20s |";
-
-        return String.format(
-                "LibraryRecord:\n" +
-                        thickLine + "\n" +
-                        headerLine + "\n" +
-                        thickLine + "\n" +
-                        "| userID        : %-20s |\n" +
-                        "| checkoutDate  : %-20s |\n" +
-                        "| dueDate       : %-20s |\n" +
-                        "| checkout      : %-20b |\n" +
-                        thickLine,
-                "Field", "Value",
-                userID, checkoutDate, dueDate, checkout
-        );
+        return "Transaction{" +
+                "transactionId='" + transactionId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", bookId='" + bookId + '\'' +
+                ", checkoutDate=" + checkoutDate +
+                ", dueDate=" + dueDate +
+                ", checkedOut=" + checkedOut +
+                '}';
     }
-
 }
 
- */

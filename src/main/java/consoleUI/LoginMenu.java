@@ -2,6 +2,7 @@ package consoleUI;
 
 import connection.DBConnection;
 import dao.BookDAO;
+import dao.TransactionDAO;
 import dao.UserDAO;
 import entity.User;
 
@@ -14,6 +15,7 @@ public class LoginMenu {
     static {
         DBConnection db = new DBConnection();
         BookDAO.BookDAOInit(db.getCollection("BookTest"));
+        TransactionDAO.initCollection(db.getCollection("TransactionTest"));
         UserDAO.initializeCollections(db.getCollection("UserTest"), db.getCollection("BookTest"));
         //UserDAO.UserDAOInit(db.getCollection("UserTest"));
     }
