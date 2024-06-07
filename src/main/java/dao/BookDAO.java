@@ -193,9 +193,8 @@ public class BookDAO {
     }
 
     // Return books by the id ( Useful for looking for books current user checked out )
-    public static List<Book> getBookById(String id){
+    public static Book getBookById(String id){
         if (collection != null){
-            List<Book> books = new ArrayList<>();
             Document query = new Document("_id", new ObjectId(id));
             // Integrate through the database and get all blogs
             try (MongoCursor<Document> cursor = collection.find(query).iterator()){
@@ -208,15 +207,15 @@ public class BookDAO {
                         List<String> genres = doc.getList("genres", String.class);
                         Boolean checkedOut = doc.getBoolean("checkedOut");
                         String currentTransactionId = doc.getString("currentTransactionId");
-                        books.add(new Book(id, title, author, description, genres,checkedOut,currentTransactionId));
+                        return new Book(id, title, author, description, genres,checkedOut,currentTransactionId);
                     }
                 }
             }
-            return books;
         }
         else {
             return null;
         }
+        return null;
     }
 
 }

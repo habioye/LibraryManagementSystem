@@ -1,7 +1,9 @@
 package consoleUI;
 
 import dao.BookDAO;
+import dao.TransactionDAO;
 import entity.Book;
+import entity.Transaction;
 import entity.User;
 
 import java.util.ArrayList;
@@ -44,19 +46,19 @@ public class ViewCheckedOutBookAdmin {
         }
     }
     private static void viewAllCheckOutsBooksMenu(Scanner sc, User user) {
-        List<Book> books =  BookDAO.viewAllCheckedOutBook();
-        for (Book b : books) {
-            System.out.println(b);
+        List<Transaction> transactions =  TransactionDAO.getCheckOutTransactions();
+        for (Transaction b : transactions) {
+            System.out.println(BookDAO.getBookById(b.getBookId()));
         }
 
     }
     private static void viewCheckOutsBookByFilter(Scanner sc, User user) {
         System.out.println("Enter book title you want to check in:");
         String title = sc.nextLine();
-        List<Book> books =  BookDAO.viewCheckOutsBookByTitle(title);
-        if (!books.isEmpty()){
-            for (Book b : books) {
-                System.out.println(b);
+        List<Transaction> transactions =  TransactionDAO.viewCheckOutsTransActionUsingTitle(title);
+        if (!transactions.isEmpty()){
+            for (Transaction transaction : transactions) {
+                System.out.println(BookDAO.getBookById(transaction.getBookId()));
             }
             System.out.println("Enter a book number to check in book or (q) to quit:");
             while (true){
@@ -66,7 +68,8 @@ public class ViewCheckedOutBookAdmin {
                         break;
                     }
                     int input = Integer.parseInt(in);
-                    BookDAO.checkInBook(books.get(input-1).getBookId());
+                    BookDAO.checkInBook(transactions.get(input-1).getBookId());
+                    TransactionDAO.checkInTransaction(transactions.get(input-1).getTransactionId());
                     System.out.println("Book checked in");
                     break;
                 } catch (Exception e){
