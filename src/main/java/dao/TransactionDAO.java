@@ -117,21 +117,21 @@ public class TransactionDAO {
         return transactions;
     }
 
-    public static ArrayList<Book> getOverdueBooksByUserID(String userId) {
+    public static ArrayList<String> getOverdueBooksByUserID(String userId) {
 
+        // Pull transaction data relating to a user.
         Document filter = new Document("userId", new ObjectId(userId));
         FindIterable<Document> result = collection.find(filter);
 
-        ArrayList<Book> overDueBooks = new ArrayList<>();
+        // For every transaction, if the book is overdue,
+        // add the ID to overDueBooks
+        ArrayList<String> overDueBooks = new ArrayList<>();
         result.forEach(doc -> {
             Date time = new Date();
             Date currentTime = new Date(time.getTime());
             Date dueDate = doc.getDate("dueDate");
             if(dueDate.before(currentTime)) {
-                List<String> genres = doc.getList("genres", String.class);
-                overDueBooks.add(new Book(doc.get("_id").toString(), doc.getString("title"),
-                        doc.getString("description"), doc.getString("author"), genres,
-                        doc.getBoolean("checkedOut"), doc.getString("currentTransactionId")));
+                overDueBooks.add(doc.get("bookId").toString());
             }
         });
 
