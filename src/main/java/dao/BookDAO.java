@@ -143,15 +143,14 @@ public class BookDAO {
             try (MongoCursor<Document> cursor = collection.find(query).iterator()){
                 while (cursor.hasNext()){
                     Document doc = cursor.next();
-                    if (doc.size() == 7){
-                        ObjectId id = doc.getObjectId("_id");
-                        String title = doc.getString("title");
-                        String author = doc.getString("author");
-                        String description = doc.getString("description");
-                        List<String> genres = doc.getList("genres", String.class);
-                        Boolean checkedOut = doc.getBoolean("checkedOut");
-                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut));
-                    }
+                    ObjectId id = doc.getObjectId("_id");
+                    String title = doc.getString("title");
+                    String author = doc.getString("author");
+                    String description = doc.getString("description");
+                    List<String> genres = doc.getList("genres", String.class);
+                    Boolean checkedOut = doc.getBoolean("checkedOut");
+                    books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut));
+
                 }
             }
             return books;

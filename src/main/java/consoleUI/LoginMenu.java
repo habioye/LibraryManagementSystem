@@ -16,7 +16,7 @@ public class LoginMenu {
         DBConnection db = new DBConnection();
         BookDAO.BookDAOInit(db.getCollection("Book"));
         TransactionDAO.initCollection(db.getCollection("Transaction"));
-        UserDAO.initializeCollections(db.getCollection("User"), db.getCollection("Book"));
+        UserDAO.initializeCollections(db.getCollection("User"), db.getCollection("Book1"));
     }
 
     // Checks if username is valid for the user.

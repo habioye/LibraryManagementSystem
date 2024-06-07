@@ -14,6 +14,7 @@ public class SetUpTest {
         DBConnection db = new DBConnection();
         BookDAO.BookDAOInit(db.getCollection("BookTest"));
         BookDAO.addBook("Title1","Author1","Des1", Arrays.asList("Genre1","Genre2"));
+        BookDAO.addBook("Title1","Author1","Des1", Arrays.asList("Genre1","Genre2"));
         BookDAO.addBook("Title2","Author2","Des2", Arrays.asList("Genre3","Genre2"));
         BookDAO.addBook("Title3","Author1","Des3", Arrays.asList("Genre1","Genre4"));
         BookDAO.addBook("Title4","Author1","Des4", Arrays.asList("Genre5","Genre3"));
