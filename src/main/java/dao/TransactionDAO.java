@@ -7,6 +7,7 @@ import org.bson.Document;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import entity.Transaction;
 import org.bson.types.ObjectId;
@@ -91,9 +92,18 @@ public class TransactionDAO {
         for (Document d : result) {
             String transactionId = d.get("_id").toString();
             String bookId = d.get("bookId").toString();
-            // TODO test if type cast works
-            Timestamp checkoutDate = Timestamp.valueOf(d.get("checkoutDate").toString());
-            Timestamp dueDate = (Timestamp) d.get("dueDate");
+
+            // Convert date to timestamp
+            Date dateResult = (Date) d.get("checkoutDate");
+            Timestamp checkoutDate = new Timestamp(dateResult.getTime());
+
+            dateResult = (Date) d.get("dueDate");
+            Timestamp dueDate = new Timestamp(dateResult.getTime());
+
+            //Timestamp checkoutDate = Timestamp.valueOf(d.get("checkoutDate").toString());
+            //Timestamp dueDate = (Timestamp) d.get("dueDate");
+
+            dueDate.getTime();
             boolean checkedOut = d.getBoolean("checkedOut");
             transactions.add(new Transaction(transactionId, userId, bookId, checkoutDate, dueDate, checkedOut));
         }
