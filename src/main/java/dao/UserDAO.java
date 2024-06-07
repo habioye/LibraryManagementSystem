@@ -110,11 +110,18 @@ public class UserDAO {
         for(Document doc: result) {
             List<ObjectId> checkedOutBooks = doc.getList("checkedOutBooks", ObjectId.class);
             ArrayList<String> checkOutBooks = new ArrayList<>();
-            checkedOutBooks.forEach(book -> checkOutBooks.add(book.toString()));
-            User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
-                    doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
-                    checkOutBooks.toArray(new String[0]));
-            usersGrabbed.add(user);
+            if (checkedOutBooks != null){
+                checkedOutBooks.forEach(book -> checkOutBooks.add(book.toString()));
+                User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
+                        doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                        new String[0]);
+                usersGrabbed.add(user);
+            } else {
+                User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
+                        doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                        checkOutBooks.toArray(new String[0]));
+                usersGrabbed.add(user);
+            }
         }
 
         // If no user with that username, return null
@@ -145,10 +152,18 @@ public class UserDAO {
         ArrayList<User> usersGrabbed = new ArrayList<>();
         for(Document doc: result) {
             List<String> checkedOutBooks = doc.getList("checkedOutBooks", String.class);
-            User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
-                    doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
-                    checkedOutBooks.toArray(new String[0]));
-            usersGrabbed.add(user);
+            if (checkedOutBooks == null){
+                User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
+                        doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                        new String[0]);
+                usersGrabbed.add(user);
+            }
+            else {
+                User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
+                        doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                        checkedOutBooks.toArray(new String[0]));
+                usersGrabbed.add(user);
+            }
         }
 
         // If no user exists with those credentials
@@ -193,7 +208,7 @@ public class UserDAO {
                 List<String> genres = doc.getList("genres", String.class);
                 Book newBook = new Book(doc.get("_id").toString(), doc.get("title").toString(),
                         doc.get("description").toString(), doc.get("author").toString(), genres,
-                        doc.getBoolean("checkedOut"), doc.get("currentTransactionId").toString());
+                        doc.getBoolean("checkedOut"));
                 booksWithSameID.add(newBook);
             }
 

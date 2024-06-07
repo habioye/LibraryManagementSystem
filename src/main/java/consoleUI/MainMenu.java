@@ -47,7 +47,9 @@ public class MainMenu {
                         DeleteBookAdmin.run(sc);
                         break;
                     case 6:
-                        TransactionDAO.getAllTransactions();
+                        for (Transaction t: TransactionDAO.getAllTransactions()){
+                            System.out.println(t);
+                        }
                         break;
                     case 7:
                         return;  // Return to login menu

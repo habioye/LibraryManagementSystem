@@ -33,8 +33,7 @@ public class BookDAO {
                     .append("author", author)
                     .append("description", description)
                     .append("genres", genres)
-                    .append("checkedOut", false)
-                    .append("currentTransactionId", "");
+                    .append("checkedOut", false);
             collection.insertOne(book);
         } else {
             System.out.println("Initialize Database");
@@ -101,8 +100,7 @@ public class BookDAO {
                     String description = doc.getString("description");
                     List<String> genres = doc.getList("genres", String.class);
                     Boolean checkedOut = doc.getBoolean("checkedOut");
-                    String currentTransactionId = doc.getString("currentTransactionId");
-                    books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
+                    books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut));
                 }
             }
             return books;
@@ -120,16 +118,13 @@ public class BookDAO {
             try (MongoCursor<Document> cursor = collection.find().iterator()) {
                 while (cursor.hasNext()) {
                     Document doc = cursor.next();
-                    if (doc.size() == 7){
                         ObjectId id = doc.getObjectId("_id");
                         String title = doc.getString("title");
                         String author = doc.getString("author");
                         String description = doc.getString("description");
                         List<String> genres = doc.getList("genres", String.class);
                         Boolean checkedOut = doc.getBoolean("checkedOut");
-                        String currentTransactionId = doc.getString("currentTransactionId");
-                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
-                    }
+                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut));
                 }
             }
             return books;
@@ -155,8 +150,7 @@ public class BookDAO {
                         String description = doc.getString("description");
                         List<String> genres = doc.getList("genres", String.class);
                         Boolean checkedOut = doc.getBoolean("checkedOut");
-                        String currentTransactionId = doc.getString("currentTransactionId");
-                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
+                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut));
                     }
                 }
             }
@@ -184,8 +178,7 @@ public class BookDAO {
                         String description = doc.getString("description");
                         List<String> genres = doc.getList("genres", String.class);
                         Boolean checkedOut = doc.getBoolean("checkedOut");
-                        String currentTransactionId = doc.getString("currentTransactionId");
-                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut,currentTransactionId));
+                        books.add(new Book(id.toHexString(), title, author, description, genres,checkedOut));
                     }
 
                 }
@@ -212,8 +205,7 @@ public class BookDAO {
             String description = doc.getString("description");
             List<String> genres = doc.getList("genres", String.class);
             Boolean checkedOut = doc.getBoolean("checkedOut");
-            String currentTransactionId = doc.getString("currentTransactionId");
-            return new Book(id, title, author, description, genres,checkedOut,currentTransactionId);
+            return new Book(id, title, author, description, genres,checkedOut);
         }
         else {
             System.out.println("Initialize Database");
