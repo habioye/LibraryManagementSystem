@@ -2,9 +2,13 @@ package dao;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
+
 import entity.Book;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import entity.Transaction;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import static com.mongodb.client.model.Filters.and;
@@ -44,7 +49,11 @@ public class TransactionDAO {
             }
         }
 
+        if(book == null)
+            return false;
+
         // TODO need to set book to checked out
+        BookDAO.checkOutBook(book.getBookId());
         // Insert transaction
         Timestamp checkoutDate = new Timestamp(System.currentTimeMillis());
         Timestamp dueDate = new Timestamp(checkoutDate.getTime() + dayToMilliseconds(14));
@@ -56,9 +65,7 @@ public class TransactionDAO {
                 .append("dueDate", dueDate)
                 .append("checkedOut", true);
 
-        if (collection.insertOne(document).wasAcknowledged())
-            return true;
-        return false;
+        return collection.insertOne(document).wasAcknowledged();
     }
 
     public static ArrayList<Transaction> getAllTransactions() {
@@ -177,6 +184,30 @@ public class TransactionDAO {
         }
 
         return transactions;
+    }
+
+    public static ArrayList<Book> getOverdueBooksByUserID(String userId) {
+
+        Document filter = new Document("userId", new ObjectId(userId));
+        FindIterable<Document> result = collection.find(filter);
+
+        ArrayList<Book> overDueBooks = new ArrayList<>();
+        result.forEach(doc -> {
+            Date time = new Date();
+            Date currentTime = new Date(time.getTime());
+            Date dueDate = doc.getDate("dueDate");
+            if(dueDate.before(currentTime)) {
+                List<String> genres = doc.getList("genres", String.class);
+                overDueBooks.add(new Book(doc.get("_id").toString(), doc.getString("title"),
+                        doc.getString("description"), doc.getString("author"), genres,
+                        doc.getBoolean("checkedOut"), doc.getString("currentTransactionId")));
+            }
+        });
+
+        if(overDueBooks.isEmpty())
+            return null;
+
+        return overDueBooks;
     }
 
     private static Long dayToMilliseconds(int days) {

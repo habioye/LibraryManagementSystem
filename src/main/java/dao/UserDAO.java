@@ -157,8 +157,8 @@ public class UserDAO {
             for(Document doc: books) {
                 List<String> genres = doc.getList("genres", String.class);
                 Book newBook = new Book(doc.get("_id").toString(), doc.get("title").toString(),
-                        doc.get("description").toString(), doc.get("author").toString(), genres, doc.getBoolean("checkedOut"),
-                        doc.get("currentTransactionId").toString());
+                        doc.get("description").toString(), doc.get("author").toString(), genres,
+                        doc.getBoolean("checkedOut"), doc.get("currentTransactionId").toString());
                 booksWithSameID.add(newBook);
             }
 
@@ -182,43 +182,4 @@ public class UserDAO {
         return userCheckOutBooks;
     }
 
-//    public static boolean checkoutBook(String bookID) {
-//
-//    }
-
 }
-
-//public boolean authenticateUser() {
-//    while(true) {
-//        ArrayList<Document> possibleMatches = new ArrayList<>();
-//
-//        System.out.println("\nEnter your username.\nEnter 'exit' to return to menu.");
-//        System.out.print("> ");
-//        String user = consoleReader.nextLine().strip().toLowerCase();
-//        if(user.equals("exit")) return false;
-//
-//        System.out.println("\nEnter your password.\nEnter 'exit' to return to menu.");
-//        System.out.print("> ");
-//        String pass = consoleReader.nextLine().strip();
-//        if(pass.equals("exit")) return false;
-//
-//        Bson filter  = Filters.and(Filters.eq("username", user), Filters.eq("password", pass));
-//        userDocuments.find(filter).forEach(possibleMatches::add);
-//
-//        if(possibleMatches.size() > 1) {
-//            System.out.println("Error: multiple users with that login info. Server issue must be resolved. Closing...");
-//            System.exit(0);
-//        }
-//        else if(possibleMatches.isEmpty()) {
-//            System.out.println("No user found with that username and password");
-//        }
-//        else {
-//            Document doc = possibleMatches.get(0);
-//            ArrayList<ObjectId> allPosts;
-//            if(doc.get("posts") == null) allPosts = new ArrayList<>();
-//            else allPosts = (ArrayList<ObjectId>) doc.get("posts");
-//            currentUser = new User((ObjectId) doc.get("_id"), (String) doc.get("name"), allPosts);
-//            return true;
-//        }
-//    }
-//}
