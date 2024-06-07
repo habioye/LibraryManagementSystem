@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import dao.BookDAO;
 import dao.TransactionDAO;
 import entity.Book;
 import entity.Transaction;
@@ -79,10 +80,18 @@ public class MainMenu {
                         ViewCheckoutMenu.run(sc, user);
                         break;
                     case 3:
-                        ArrayList<Book> overdueBooks = TransactionDAO.getOverdueBooksByUserID(user.getUserID());
+                        ArrayList<String> overdueIds = TransactionDAO.getOverdueBooksByUserID(user.getUserID());
+                        ArrayList<Book> overdueBooks = new ArrayList<>();
+                        for (String id : overdueIds) {
+                            overdueBooks.add(BookDAO.getBookById(id));
+                        }
+
                         for (Book b : overdueBooks) {
                             System.out.println(b);
                         }
+
+                        System.out.println("Hit enter to return");
+                        sc.nextLine();
                         break;
                     case 4:
                         CheckoutBookMenu.run(sc, user);
