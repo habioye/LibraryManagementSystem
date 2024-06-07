@@ -149,11 +149,10 @@ public class TransactionDAO {
         return transactions;
     }
 
-    // Update a transaction when it's checked in
-    public static void checkInTransaction(String id) {
-        if (collection != null) {
-            collection.updateOne(eq("_id", new ObjectId(id)), set("checkedOut", false));
-        } else {
+    public static void checkInTransaction(String transactionId){
+        if (collection != null){
+            collection.updateOne(eq("_id", new ObjectId(transactionId)), set("checkedOut", false));
+        }else {
             System.out.println("Initialize Database");
         }
     }

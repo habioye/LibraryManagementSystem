@@ -144,10 +144,12 @@ public class UserDAO {
         // Create user objects with given credentials
         ArrayList<User> usersGrabbed = new ArrayList<>();
         for(Document doc: result) {
-            List<String> checkedOutBooks = doc.getList("checkedOutBooks", String.class);
+            List<ObjectId> checkedOutBooks = doc.getList("checkedOutBooks", ObjectId.class);
+            ArrayList<String> stringBookIds = new ArrayList<>();
+            checkedOutBooks.forEach(id -> stringBookIds.add(id.toString()));
             User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
                     doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
-                    checkedOutBooks.toArray(new String[0]));
+                    stringBookIds.toArray(new String[0]));
             usersGrabbed.add(user);
         }
 
