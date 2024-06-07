@@ -72,6 +72,7 @@ public class Transaction {
         return "Transaction{" +
                 "transactionId='" + transactionId + '\'' +
                 ", userId='" + userId + '\'' +
+                ", userName='" + getUserById(userId) + '\'' +
                 ", bookId='" + bookId + '\'' +
                 ", checkoutDate=" + checkoutDate +
                 ", dueDate=" + dueDate +
