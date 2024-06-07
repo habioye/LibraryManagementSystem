@@ -126,7 +126,6 @@ public class BookDAO {
         }
     }
 
-    // TODO test this
     public static Book getBookByTitle(String title) {
         if (collection != null) {
             Document filter = new Document("title", title);
