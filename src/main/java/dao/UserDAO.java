@@ -249,11 +249,18 @@ public class UserDAO {
         for(Document doc: result) {
             List<ObjectId> users = doc.getList("checkedOutBooks", ObjectId.class);
             ArrayList<String> userBooks = new ArrayList<>();
-            users.forEach(book -> userBooks.add(book.toString()));
-            User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
-                    doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
-                    userBooks.toArray(new String[0]));
-            allUsers.add(user);
+            if (users != null){
+                users.forEach(book -> userBooks.add(book.toString()));
+                User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
+                        doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                        new String[0]);
+                allUsers.add(user);
+            } else {
+                User user = new User(doc.get("_id").toString(), doc.get("role").toString(), doc.get("username").toString(),
+                        doc.get("password").toString(), doc.get("firstname").toString(), doc.get("lastname").toString(),
+                        userBooks.toArray(new String[0]));
+                allUsers.add(user);
+            }
         }
 
 
